@@ -41,6 +41,7 @@ export function MeetingForm({ accounts, campaigns, mode = "create", initialValue
     "Attendee Email": initialValues?.fields["Attendee Email"] ?? "",
     "Attendee Phone": initialValues?.fields["Attendee Phone"] ?? "",
     "Attendee LinkedIn": initialValues?.fields["Attendee LinkedIn"] ?? "",
+    "Attendee Website": initialValues?.fields["Attendee Website"] ?? "",
     "Attendee Company": initialValues?.fields["Attendee Company"] ?? "",
     "Attendee Background": initialValues?.fields["Attendee Background"] ?? "",
   });
@@ -76,6 +77,7 @@ export function MeetingForm({ accounts, campaigns, mode = "create", initialValue
           attendeeName: form["Attendee Name"],
           attendeeEmail: form["Attendee Email"],
           attendeeLinkedIn: form["Attendee LinkedIn"],
+          attendeeWebsite: form["Attendee Website"],
           attendeeCompany: form["Attendee Company"],
           accountName: selectedAccount?.fields["Name"],
           campaignName: selectedCampaign?.fields["Campaign Name"],
@@ -116,6 +118,7 @@ export function MeetingForm({ accounts, campaigns, mode = "create", initialValue
         ...(form["Attendee Email"] && { "Attendee Email": form["Attendee Email"] }),
         ...(form["Attendee Phone"] && { "Attendee Phone": form["Attendee Phone"] }),
         ...(form["Attendee LinkedIn"] && { "Attendee LinkedIn": form["Attendee LinkedIn"] }),
+        ...(form["Attendee Website"] && { "Attendee Website": form["Attendee Website"] }),
         ...(form["Attendee Company"] && { "Attendee Company": form["Attendee Company"] }),
         ...(form["Attendee Background"] && { "Attendee Background": form["Attendee Background"] }),
       };
@@ -250,6 +253,17 @@ export function MeetingForm({ accounts, campaigns, mode = "create", initialValue
               value={form["Attendee LinkedIn"]}
               onChange={(e) => set("Attendee LinkedIn", e.target.value)}
               placeholder="https://linkedin.com/in/..."
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="attendeeWebsite">Attendee Website</Label>
+            <Input
+              id="attendeeWebsite"
+              type="url"
+              value={form["Attendee Website"]}
+              onChange={(e) => set("Attendee Website", e.target.value)}
+              placeholder="https://..."
             />
           </div>
 

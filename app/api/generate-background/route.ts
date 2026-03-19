@@ -12,6 +12,7 @@ export async function POST(request: NextRequest) {
       attendeeName,
       attendeeEmail,
       attendeeLinkedIn,
+      attendeeWebsite,
       attendeeCompany,
       accountName,
       campaignName,
@@ -38,6 +39,7 @@ export async function POST(request: NextRequest) {
 Name: ${attendeeName}
 Email: ${attendeeEmail ?? "N/A"}
 LinkedIn: ${attendeeLinkedIn ?? "N/A"}
+Website: ${attendeeWebsite ?? "N/A"}
 Attendee's company: ${attendeeCompany ?? accountName ?? "N/A"}
 We are meeting them on behalf of: ${accountName ?? "N/A"}
 Campaign context: ${campaignName ?? "N/A"} — ${campaignPurpose ?? "N/A"}

@@ -64,6 +64,7 @@ export async function POST(request: NextRequest) {
       "Attendee Email": attendeeEmail,
       "Attendee Phone": attendeePhone,
       "Attendee LinkedIn": attendeeLinkedIn,
+      "Attendee Website": attendeeWebsite,
       "Attendee Company": attendeeCompany,
       "Attendee Background": attendeeBackground,
     } = body;
@@ -88,6 +89,7 @@ export async function POST(request: NextRequest) {
       ...(attendeeEmail && { "Attendee Email": attendeeEmail }),
       ...(attendeePhone && { "Attendee Phone": attendeePhone }),
       ...(attendeeLinkedIn && { "Attendee LinkedIn": attendeeLinkedIn }),
+      ...(attendeeWebsite && { "Attendee Website": attendeeWebsite }),
       ...(attendeeCompany && { "Attendee Company": attendeeCompany }),
       ...(attendeeBackground && { "Attendee Background": attendeeBackground }),
     };

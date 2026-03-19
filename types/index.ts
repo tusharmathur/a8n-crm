@@ -49,6 +49,7 @@ export interface MeetingFields {
   "Attendee Phone"?: string;
   "Attendee LinkedIn"?: string;
   "Attendee Company"?: string;
+  "Attendee Website"?: string;
   "Attendee Background"?: string;
   "Outcome / Next Steps"?: string;
 }
