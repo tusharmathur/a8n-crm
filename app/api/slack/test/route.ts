@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
       return Response.json({ success: false, error: "No channel configured" });
     }
 
-    const botToken = process.env.SLACK_BOT_TOKEN;
+    const botToken = process.env.SLACK_BOT_TOKEN?.trim();
     if (!botToken) {
       return Response.json({ success: false, error: "SLACK_BOT_TOKEN not configured" });
     }

@@ -127,7 +127,7 @@ export async function sendMeetingSlackNotification(payload: MeetingSlackPayload)
     return;
   }
 
-  const botToken = process.env.SLACK_BOT_TOKEN;
+  const botToken = process.env.SLACK_BOT_TOKEN?.trim();
 
   if (botToken) {
     try {
