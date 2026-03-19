@@ -34,6 +34,7 @@ export function MeetingForm({ accounts, campaigns, mode = "create", initialValue
   const [form, setForm] = useState({
     Account: initialValues?.fields["Account"]?.[0] ?? "",
     Campaign: initialValues?.fields["Campaign"]?.[0] ?? "",
+    "Meeting Creation Date": toDatetimeLocal(initialValues?.fields["Meeting Creation Date"]) || new Date().toISOString().slice(0, 16),
     "Scheduled Meeting Date": toDatetimeLocal(initialValues?.fields["Scheduled Meeting Date"]),
     "Meeting Taker": initialValues?.fields["Meeting Taker"] ?? "",
     "Meeting Taker Email": initialValues?.fields["Meeting Taker Email"] ?? "",
@@ -112,6 +113,7 @@ export function MeetingForm({ accounts, campaigns, mode = "create", initialValue
         "Attendee Name": form["Attendee Name"].trim(),
         Account: [form.Account],
         Campaign: [form.Campaign],
+        ...(form["Meeting Creation Date"] && { "Meeting Creation Date": form["Meeting Creation Date"] }),
         ...(form["Scheduled Meeting Date"] && { "Scheduled Meeting Date": form["Scheduled Meeting Date"] }),
         ...(form["Meeting Taker"] && { "Meeting Taker": form["Meeting Taker"] }),
         ...(form["Meeting Taker Email"] && { "Meeting Taker Email": form["Meeting Taker Email"] }),
@@ -176,6 +178,16 @@ export function MeetingForm({ accounts, campaigns, mode = "create", initialValue
               ))}
             </Select>
             {errors.Campaign && <p className="text-[#EF4444] text-xs mt-1">{errors.Campaign}</p>}
+          </div>
+
+          <div>
+            <Label htmlFor="creationDate">Meeting Creation Date</Label>
+            <Input
+              id="creationDate"
+              type="datetime-local"
+              value={form["Meeting Creation Date"]}
+              onChange={(e) => set("Meeting Creation Date", e.target.value)}
+            />
           </div>
 
           <div>
