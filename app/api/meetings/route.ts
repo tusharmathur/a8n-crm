@@ -105,7 +105,8 @@ export async function POST(request: NextRequest) {
 
     return Response.json(record, { status: 201 });
   } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
     console.error(err);
-    return Response.json({ error: "Failed to create meeting" }, { status: 500 });
+    return Response.json({ error: message }, { status: 500 });
   }
 }
