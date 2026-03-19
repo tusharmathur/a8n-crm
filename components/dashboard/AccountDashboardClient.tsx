@@ -51,7 +51,7 @@ export function AccountDashboardClient({ meetings, campaigns, accountId, dashboa
   };
 
   const chartData = groupMeetingsByMonth(
-    meetings.map((m) => ({ scheduledDate: m.fields["Scheduled Meeting Date"] }))
+    meetings.map((m) => ({ scheduledDate: m.fields["Meeting Creation Date"] }))
   );
 
   const lastMeetingDate = meetings

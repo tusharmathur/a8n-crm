@@ -29,7 +29,7 @@ export function GlobalDashboardClient({ accounts, initialMeetings, initialCampai
     : initialCampaigns;
 
   const chartData = groupMeetingsByMonth(
-    meetings.map((m) => ({ scheduledDate: m.fields["Scheduled Meeting Date"] }))
+    meetings.map((m) => ({ scheduledDate: m.fields["Meeting Creation Date"] }))
   );
 
   const sorted = meetings.slice().sort((a, b) => {

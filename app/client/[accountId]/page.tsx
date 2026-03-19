@@ -71,7 +71,7 @@ export default async function ClientDashboardPage({ params, searchParams }: Prop
   const meetings = allMeetings.filter((m) => m.fields["Account"]?.includes(accountId));
 
   const chartData = groupMeetingsByMonth(
-    meetings.map((m) => ({ scheduledDate: m.fields["Scheduled Meeting Date"] }))
+    meetings.map((m) => ({ scheduledDate: m.fields["Meeting Creation Date"] }))
   );
 
   const fields = account.fields;
