@@ -13,14 +13,17 @@ interface AccountDashboardClientProps {
   campaigns: Campaign[];
   accountId: string;
   dashboardLink?: string;
+  slackChannel?: string;
 }
 
 /** Client-side interactive parts of the account dashboard. */
-export function AccountDashboardClient({ meetings, campaigns, accountId, dashboardLink: initialDashboardLink }: AccountDashboardClientProps) {
+export function AccountDashboardClient({ meetings, campaigns, accountId, dashboardLink: initialDashboardLink, slackChannel }: AccountDashboardClientProps) {
   const { toast, showToast, dismissToast } = useToast();
   const [copied, setCopied] = useState(false);
   const [dashboardLink, setDashboardLink] = useState(initialDashboardLink ?? "");
   const [generating, setGenerating] = useState(false);
+  const [slackTesting, setSlackTesting] = useState(false);
+  const [slackResult, setSlackResult] = useState<{ ok: boolean; msg: string } | null>(null);
 
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -32,6 +35,30 @@ export function AccountDashboardClient({ meetings, campaigns, accountId, dashboa
   const handleCopyDashboardLink = () => {
     navigator.clipboard.writeText(dashboardLink);
     showToast("Link copied!");
+  };
+
+  const handleTestSlack = async () => {
+    setSlackTesting(true);
+    setSlackResult(null);
+    try {
+      const res = await fetch("/api/slack/test", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ accountId }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        const note = data.botInvited ? " · Bot auto-joined channel" : "";
+        setSlackResult({ ok: true, msg: `✓ Message sent to ${data.channel}${note}` });
+      } else {
+        setSlackResult({ ok: false, msg: `✗ ${data.error}` });
+      }
+    } catch {
+      setSlackResult({ ok: false, msg: "✗ Request failed" });
+    } finally {
+      setSlackTesting(false);
+      setTimeout(() => setSlackResult(null), 5000);
+    }
   };
 
   const handleGenerateLink = async () => {
@@ -111,6 +138,32 @@ export function AccountDashboardClient({ meetings, campaigns, accountId, dashboa
           >
             {generating ? "Generating…" : "Generate Link"}
           </button>
+        )}
+      </div>
+
+      {/* Slack channel row */}
+      <div className="bg-white border border-[#E2E8F0] rounded-[10px] px-4 py-3 mb-6 flex items-center gap-3 flex-wrap">
+        <span className="text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium flex-shrink-0">
+          Slack Channel
+        </span>
+        {slackChannel ? (
+          <>
+            <span className="text-sm text-[#1E293B] font-mono">{slackChannel}</span>
+            <button
+              onClick={handleTestSlack}
+              disabled={slackTesting}
+              className="ml-auto text-xs border border-[#E2E8F0] rounded-md px-2.5 py-1 text-[#1E293B] hover:bg-[#F8FAFC] disabled:opacity-50 flex-shrink-0"
+            >
+              {slackTesting ? "Testing…" : "🔔 Test Slack"}
+            </button>
+          </>
+        ) : (
+          <span className="text-sm text-[#94A3B8]">No Slack channel configured</span>
+        )}
+        {slackResult && (
+          <span className={`text-xs w-full mt-1 ${slackResult.ok ? "text-[#10B981]" : "text-[#EF4444]"}`}>
+            {slackResult.msg}
+          </span>
         )}
       </div>
 

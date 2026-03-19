@@ -25,6 +25,7 @@ export function AccountForm({ mode = "create", initialValues, recordId }: Accoun
     "Main Contact Name": initialValues?.fields["Main Contact Name"] ?? "",
     Address: initialValues?.fields["Address"] ?? "",
     "Engagement Goals": initialValues?.fields["Engagement Goals"] ?? "",
+    "Slack Channel": initialValues?.fields["Slack Channel"] ?? "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [apiError, setApiError] = useState("");
@@ -146,6 +147,19 @@ export function AccountForm({ mode = "create", initialValues, recordId }: Accoun
             value={form["Engagement Goals"]}
             onChange={(e) => set("Engagement Goals", e.target.value)}
           />
+        </div>
+
+        <div className="mt-4">
+          <Label htmlFor="slackChannel">Slack Channel</Label>
+          <Input
+            id="slackChannel"
+            value={form["Slack Channel"]}
+            onChange={(e) => set("Slack Channel", e.target.value)}
+            placeholder="#channel-name"
+          />
+          <p className="text-xs text-[#94A3B8] mt-1">
+            The Slack channel where meeting notifications will be sent
+          </p>
         </div>
 
         {apiError && (

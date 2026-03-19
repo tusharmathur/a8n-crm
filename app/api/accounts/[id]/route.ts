@@ -44,6 +44,7 @@ export async function PATCH(
       "Main Contact Name": mainContact,
       Address,
       "Engagement Goals": goals,
+      "Slack Channel": slackChannel,
     } = body;
 
     if (!Name?.trim()) {
@@ -58,6 +59,7 @@ export async function PATCH(
       ...(mainContact && { "Main Contact Name": mainContact }),
       ...(Address && { Address }),
       ...(goals && { "Engagement Goals": goals }),
+      ...(slackChannel && { "Slack Channel": slackChannel }),
     };
 
     // Snapshot before values for audit log

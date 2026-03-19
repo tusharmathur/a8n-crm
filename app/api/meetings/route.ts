@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { auth } from "@/auth";
 import { airtableFetch, airtableFetchOne, airtableCreate } from "@/lib/airtable";
 import { writeAuditLog } from "@/lib/audit";
+import { sendMeetingSlackNotification } from "@/lib/slack";
 import { MeetingFields, AccountFields, CampaignFields } from "@/types";
 
 export async function GET(request: NextRequest) {
@@ -96,7 +97,24 @@ export async function POST(request: NextRequest) {
       ...(attendeeBackground && { "Attendee Background": attendeeBackground }),
     };
 
-    const record = await airtableCreate<MeetingFields>("Meetings", fields);
+    // Fetch account + campaign in parallel with record creation for Slack notification
+    const [record, accountRecord, campaignRecord] = await Promise.all([
+      airtableCreate<MeetingFields>("Meetings", fields),
+      accountIds[0] ? airtableFetchOne<AccountFields>("Accounts", accountIds[0]) : Promise.resolve(null),
+      campaignIds[0] ? airtableFetchOne<CampaignFields>("Campaigns", campaignIds[0]) : Promise.resolve(null),
+    ]);
+
+    // Fire-and-forget — never blocks the response
+    sendMeetingSlackNotification({
+      attendeeName: fields["Attendee Name"] ?? "",
+      attendeeCompany: fields["Attendee Company"],
+      campaignName: campaignRecord?.fields["Campaign Name"],
+      scheduledDate: fields["Scheduled Meeting Date"],
+      meetingTaker: fields["Meeting Taker"],
+      accountName: accountRecord?.fields["Name"],
+      accountDashboardLink: accountRecord?.fields["Dashboard Link"] ?? "",
+      slackChannel: accountRecord?.fields["Slack Channel"] ?? "",
+    }).catch((err) => console.error("Slack notification error:", err));
 
     await writeAuditLog({
       action: "Created Meeting",

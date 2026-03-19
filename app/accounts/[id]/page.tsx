@@ -123,6 +123,7 @@ export default async function AccountDashboardPage({ params }: Props) {
           campaigns={campaigns}
           accountId={id}
           dashboardLink={fields["Dashboard Link"]}
+          slackChannel={fields["Slack Channel"]}
         />
       </div>
     </div>

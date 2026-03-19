@@ -15,6 +15,7 @@ export interface AccountFields {
   Address?: string;
   "Engagement Goals"?: string;
   "Dashboard Link"?: string;
+  "Slack Channel"?: string;
 }
 
 export type Account = AirtableRecord<AccountFields>;

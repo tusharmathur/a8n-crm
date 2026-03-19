@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { Name, Status, Website, "Account Owner": accountOwner, "Main Contact Name": mainContact, Address, "Engagement Goals": engagementGoals } = body;
+    const { Name, Status, Website, "Account Owner": accountOwner, "Main Contact Name": mainContact, Address, "Engagement Goals": engagementGoals, "Slack Channel": slackChannel } = body;
 
     if (!Name?.trim()) {
       return Response.json({ error: "Name is required" }, { status: 400 });
@@ -38,6 +38,7 @@ export async function POST(request: NextRequest) {
       ...(mainContact && { "Main Contact Name": mainContact }),
       ...(Address && { Address }),
       ...(engagementGoals && { "Engagement Goals": engagementGoals }),
+      ...(slackChannel && { "Slack Channel": slackChannel }),
     };
 
     const record = await airtableCreate<AccountFields>("Accounts", fields);
