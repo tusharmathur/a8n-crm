@@ -2,18 +2,20 @@
 
 import { useState } from "react";
 import { MeetingsChart } from "./MeetingsChart";
+import { CampaignPerformanceSection } from "./CampaignPerformanceSection";
 import { getMeetingTitle, formatDate, groupMeetingsByMonth } from "@/lib/utils";
-import { Account, Meeting } from "@/types";
+import { Account, Meeting, Campaign } from "@/types";
 import { Select, Label } from "@/components/ui/Input";
 import { Badge } from "@/components/ui/Badge";
 
 interface GlobalDashboardClientProps {
   accounts: Account[];
   initialMeetings: Meeting[];
+  initialCampaigns: Campaign[];
 }
 
 /** Global dashboard with optional account filter and meeting charts. */
-export function GlobalDashboardClient({ accounts, initialMeetings }: GlobalDashboardClientProps) {
+export function GlobalDashboardClient({ accounts, initialMeetings, initialCampaigns }: GlobalDashboardClientProps) {
   const [selectedAccountId, setSelectedAccountId] = useState("");
 
   const selectedAccount = accounts.find((a) => a.id === selectedAccountId);
@@ -21,6 +23,10 @@ export function GlobalDashboardClient({ accounts, initialMeetings }: GlobalDashb
   const meetings = selectedAccountId
     ? initialMeetings.filter((m) => m.fields["Account"]?.includes(selectedAccountId))
     : initialMeetings;
+
+  const campaigns = selectedAccountId
+    ? initialCampaigns.filter((c) => c.fields["Account"]?.includes(selectedAccountId))
+    : initialCampaigns;
 
   const chartData = groupMeetingsByMonth(
     meetings.map((m) => ({ scheduledDate: m.fields["Scheduled Meeting Date"] }))
@@ -67,6 +73,9 @@ export function GlobalDashboardClient({ accounts, initialMeetings }: GlobalDashb
           )}
         </div>
       )}
+
+      {/* Campaign performance */}
+      <CampaignPerformanceSection campaigns={campaigns} accountId={selectedAccountId} />
 
       {/* Chart */}
       <div className="bg-white border border-[#E2E8F0] rounded-[12px] p-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)] mb-6">
