@@ -55,7 +55,7 @@ export function AccountDashboardClient({ meetings, campaigns, accountId, dashboa
   );
 
   const lastMeetingDate = meetings
-    .map((m) => m.fields["Scheduled Meeting Date"])
+    .map((m) => m.fields["Meeting Creation Date"])
     .filter(Boolean)
     .sort()
     .at(-1);
@@ -151,8 +151,8 @@ export function AccountDashboardClient({ meetings, campaigns, accountId, dashboa
             {meetings
               .slice()
               .sort((a, b) => {
-                const dA = a.fields["Scheduled Meeting Date"] ?? "";
-                const dB = b.fields["Scheduled Meeting Date"] ?? "";
+                const dA = a.fields["Meeting Creation Date"] ?? "";
+                const dB = b.fields["Meeting Creation Date"] ?? "";
                 return dB.localeCompare(dA);
               })
               .map((m) => {
@@ -169,7 +169,7 @@ export function AccountDashboardClient({ meetings, campaigns, accountId, dashboa
                     </div>
                     <div className="flex-shrink-0">
                       <span className="text-xs bg-[#F1F5F9] text-[#64748B] rounded-full px-2 py-1">
-                        {formatDate(m.fields["Scheduled Meeting Date"])}
+                        {formatDate(m.fields["Meeting Creation Date"])}
                       </span>
                     </div>
                   </div>

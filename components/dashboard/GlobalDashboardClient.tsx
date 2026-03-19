@@ -33,8 +33,8 @@ export function GlobalDashboardClient({ accounts, initialMeetings, initialCampai
   );
 
   const sorted = meetings.slice().sort((a, b) => {
-    const dA = a.fields["Scheduled Meeting Date"] ?? "";
-    const dB = b.fields["Scheduled Meeting Date"] ?? "";
+    const dA = a.fields["Meeting Creation Date"] ?? "";
+    const dB = b.fields["Meeting Creation Date"] ?? "";
     return dB.localeCompare(dA);
   });
 
@@ -103,7 +103,7 @@ export function GlobalDashboardClient({ accounts, initialMeetings, initialCampai
                 <div key={m.id} className="py-3 flex items-start justify-between gap-4">
                   <p className="font-semibold text-sm text-[#1E293B] truncate">{title}</p>
                   <span className="text-xs bg-[#F1F5F9] text-[#64748B] rounded-full px-2 py-1 flex-shrink-0">
-                    {formatDate(m.fields["Scheduled Meeting Date"])}
+                    {formatDate(m.fields["Meeting Creation Date"])}
                   </span>
                 </div>
               );
