@@ -86,7 +86,7 @@ export default async function ClientDashboardPage({ params, searchParams }: Prop
           className="flex items-center gap-2"
         >
           <A8NBadge size={32} />
-          <span style={{ fontSize: 16, fontWeight: 700, color: "#1E293B" }}>CRM</span>
+          <span style={{ fontSize: 16, fontWeight: 700, color: "#1E293B" }}>Dashboard</span>
         </a>
         <span className="ml-auto text-[11px] bg-[#F1F5F9] text-[#94A3B8] rounded-md px-2 py-1">
           Read-only view
