@@ -82,7 +82,6 @@ export async function POST(request: NextRequest) {
       "Attendee Name": attendeeName.trim(),
       Account: accountIds,
       Campaign: campaignIds,
-      "Meeting Creation Date": new Date().toISOString(),
       ...(meetingTaker && { "Meeting Taker": meetingTaker }),
       ...(meetingTakerEmail && { "Meeting Taker Email": meetingTakerEmail }),
       ...(scheduledDate && { "Scheduled Meeting Date": scheduledDate }),

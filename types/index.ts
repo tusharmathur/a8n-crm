@@ -42,7 +42,7 @@ export interface MeetingFields {
   Campaign?: string[];          // linked record IDs
   "Meeting Taker"?: string;
   "Meeting Taker Email"?: string;
-  "Meeting Creation Date"?: string;
+  "Meeting Creation Date"?: string;  // computed/read-only — returned by Airtable, never written
   "Scheduled Meeting Date"?: string;
   "Attendee Email"?: string;
   "Attendee Phone"?: string;
