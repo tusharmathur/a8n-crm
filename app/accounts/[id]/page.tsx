@@ -40,7 +40,7 @@ export default async function AccountDashboardPage({ params }: Props) {
   // Fetch meetings and campaigns for this account in parallel
   const [allMeetings, campaignRecords] = await Promise.all([
     airtableFetch<MeetingFields>("Meetings", `FIND("${id}", ARRAYJOIN({Account}))`),
-    airtableFetch<CampaignFields>("Campaigns", `FIND("${id}", ARRAYJOIN({Account})) > 0`),
+    airtableFetch<CampaignFields>("Campaigns", `FIND("${id}", ARRAYJOIN({Account}))`),
   ]);
 
   // Enrich meetings with campaign names
