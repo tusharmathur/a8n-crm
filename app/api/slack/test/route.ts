@@ -69,24 +69,35 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Step 2 — auto-invite bot to private channel
+    // Step 2 — join the channel (public: conversations.join; private: conversations.invite)
     let botInvited = false;
-
-    if (!cachedBotUserId) {
-      const authRes = await client.auth.test();
-      cachedBotUserId = authRes.user_id as string;
-    }
+    const alreadyIn = new Set(["already_in_channel", "cant_invite_self", "is_bot", "method_not_supported_for_channel_type"]);
 
     try {
-      await client.conversations.invite({ channel: channelId, users: cachedBotUserId });
+      await client.conversations.join({ channel: channelId });
       botInvited = true;
-    } catch (inviteErr: unknown) {
-      const errCode = (inviteErr as { data?: { error?: string } }).data?.error;
-      if (errCode !== "already_in_channel") {
-        const errMsg = (inviteErr as { message?: string }).message ?? "Failed to invite bot to channel";
+    } catch (joinErr: unknown) {
+      const joinCode = (joinErr as { data?: { error?: string } }).data?.error;
+      if (joinCode === "method_not_supported_for_channel_type") {
+        // Private channel — invite the bot user instead
+        if (!cachedBotUserId) {
+          const authRes = await client.auth.test();
+          cachedBotUserId = authRes.user_id as string;
+        }
+        try {
+          await client.conversations.invite({ channel: channelId, users: cachedBotUserId });
+          botInvited = true;
+        } catch (inviteErr: unknown) {
+          const inviteCode = (inviteErr as { data?: { error?: string } }).data?.error;
+          if (!alreadyIn.has(inviteCode ?? "")) {
+            const errMsg = (inviteErr as { message?: string }).message ?? "Failed to join channel";
+            return Response.json({ success: false, error: errMsg });
+          }
+        }
+      } else if (!alreadyIn.has(joinCode ?? "")) {
+        const errMsg = (joinErr as { message?: string }).message ?? "Failed to join channel";
         return Response.json({ success: false, error: errMsg });
       }
-      // already_in_channel — treat as success
     }
 
     // Step 3 — send test message

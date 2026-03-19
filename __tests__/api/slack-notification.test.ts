@@ -6,13 +6,14 @@ import { NextRequest } from "next/server";
 const mockPostMessage = vi.fn();
 const mockConversationsList = vi.fn();
 const mockConversationsInvite = vi.fn();
+const mockConversationsJoin = vi.fn();
 const mockAuthTest = vi.fn();
 
 vi.mock("@slack/web-api", () => ({
   WebClient: vi.fn(function () {
     return {
       chat: { postMessage: mockPostMessage },
-      conversations: { list: mockConversationsList, invite: mockConversationsInvite },
+      conversations: { list: mockConversationsList, invite: mockConversationsInvite, join: mockConversationsJoin },
       auth: { test: mockAuthTest },
     };
   }),
@@ -188,10 +189,10 @@ describe("POST /api/slack/test", () => {
     expect(data.error).toMatch(/channel not found/i);
   });
 
-  it("auto-invites bot and returns botInvited: true when not yet member", async () => {
+  it("joins channel and returns botInvited: true", async () => {
     mockFetchOne.mockResolvedValue(mockAccountWithChannel as never);
     mockConversationsList.mockResolvedValue(CHANNEL_LIST_FOUND);
-    mockConversationsInvite.mockResolvedValue({ ok: true });
+    mockConversationsJoin.mockResolvedValue({ ok: true });
     mockPostMessage.mockResolvedValue({ ok: true });
     const res = await slackTest(makeTestRequest({ accountId: "rec123" }));
     const data = await res.json();
@@ -200,10 +201,10 @@ describe("POST /api/slack/test", () => {
     expect(data.channel).toBe("#acme");
   });
 
-  it("treats already_in_channel invite error as success", async () => {
+  it("treats already_in_channel join error as success", async () => {
     mockFetchOne.mockResolvedValue(mockAccountWithChannel as never);
     mockConversationsList.mockResolvedValue(CHANNEL_LIST_FOUND);
-    mockConversationsInvite.mockRejectedValue({ data: { error: "already_in_channel" } });
+    mockConversationsJoin.mockRejectedValue({ data: { error: "already_in_channel" } });
     mockPostMessage.mockResolvedValue({ ok: true });
     const res = await slackTest(makeTestRequest({ accountId: "rec123" }));
     const data = await res.json();
@@ -211,22 +212,21 @@ describe("POST /api/slack/test", () => {
     expect(data.channel).toBe("#acme");
   });
 
-  it("returns success: false when invite fails with other error", async () => {
+  it("falls back to invite for private channel and returns success", async () => {
     mockFetchOne.mockResolvedValue(mockAccountWithChannel as never);
     mockConversationsList.mockResolvedValue(CHANNEL_LIST_FOUND);
-    mockConversationsInvite.mockRejectedValue({
-      message: "cant_invite_self",
-      data: { error: "cant_invite_self" },
-    });
+    mockConversationsJoin.mockRejectedValue({ data: { error: "method_not_supported_for_channel_type" } });
+    mockConversationsInvite.mockResolvedValue({ ok: true });
+    mockPostMessage.mockResolvedValue({ ok: true });
     const res = await slackTest(makeTestRequest({ accountId: "rec123" }));
     const data = await res.json();
-    expect(data.success).toBe(false);
+    expect(data.success).toBe(true);
   });
 
   it("returns success: false when postMessage throws", async () => {
     mockFetchOne.mockResolvedValue(mockAccountWithChannel as never);
     mockConversationsList.mockResolvedValue(CHANNEL_LIST_FOUND);
-    mockConversationsInvite.mockResolvedValue({ ok: true });
+    mockConversationsJoin.mockResolvedValue({ ok: true });
     mockPostMessage.mockRejectedValue(new Error("channel_not_found"));
     const res = await slackTest(makeTestRequest({ accountId: "rec123" }));
     const data = await res.json();
@@ -234,10 +234,10 @@ describe("POST /api/slack/test", () => {
     expect(data.error).toContain("channel_not_found");
   });
 
-  it("handles multiple calls without error (bot user ID caching)", async () => {
+  it("handles multiple calls without error", async () => {
     mockFetchOne.mockResolvedValue(mockAccountWithChannel as never);
     mockConversationsList.mockResolvedValue(CHANNEL_LIST_FOUND);
-    mockConversationsInvite.mockResolvedValue({ ok: true });
+    mockConversationsJoin.mockResolvedValue({ ok: true });
     mockPostMessage.mockResolvedValue({ ok: true });
     const res1 = await slackTest(makeTestRequest({ accountId: "rec123" }));
     const res2 = await slackTest(makeTestRequest({ accountId: "rec123" }));
