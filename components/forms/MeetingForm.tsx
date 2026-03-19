@@ -63,6 +63,7 @@ export function MeetingForm({ accounts, campaigns }: MeetingFormProps) {
           attendeeName: form["Attendee Name"],
           attendeeEmail: form["Attendee Email"],
           attendeeLinkedIn: form["Attendee LinkedIn"],
+          attendeeCompany: form["Attendee Company"],
           accountName: selectedAccount?.fields["Name"],
           campaignName: selectedCampaign?.fields["Campaign Name"],
           campaignPurpose: selectedCampaign?.fields["Purpose"],

@@ -12,6 +12,7 @@ export async function POST(request: NextRequest) {
       attendeeName,
       attendeeEmail,
       attendeeLinkedIn,
+      attendeeCompany,
       accountName,
       campaignName,
       campaignPurpose,
@@ -33,14 +34,15 @@ export async function POST(request: NextRequest) {
       messages: [
         {
           role: "user",
-          content: `Generate a background brief for this meeting attendee:
+          content: `Generate a background brief focused on this individual meeting attendee:
 Name: ${attendeeName}
 Email: ${attendeeEmail ?? "N/A"}
 LinkedIn: ${attendeeLinkedIn ?? "N/A"}
-Their company / account: ${accountName ?? "N/A"}
+Attendee's company: ${attendeeCompany ?? accountName ?? "N/A"}
+We are meeting them on behalf of: ${accountName ?? "N/A"}
 Campaign context: ${campaignName ?? "N/A"} — ${campaignPurpose ?? "N/A"}
 
-Cover: what their company does, the attendee's likely role and seniority, and any relevant context about why they may have agreed to this meeting. Be concise and practical.`,
+Focus on the PERSON: their likely role, seniority, professional background, and why they may have agreed to this meeting. Do not write about the company in general — write about this individual. Be concise and practical. 3-5 sentences.`,
         },
       ],
     });
