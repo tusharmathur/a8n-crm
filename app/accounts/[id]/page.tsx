@@ -38,14 +38,18 @@ export default async function AccountDashboardPage({ params }: Props) {
   }
 
   // Fetch meetings and campaigns for this account in parallel
-  const [allMeetings, campaignRecords] = await Promise.all([
-    airtableFetch<MeetingFields>("Meetings", `FIND("${id}", ARRAYJOIN({Account}))`),
-    airtableFetch<CampaignFields>("Campaigns", `FIND("${id}", ARRAYJOIN({Account}))`),
+  // Note: ARRAYJOIN on linked record fields returns display names, not IDs,
+  // so we fetch all records and filter by ID in JS.
+  const [allMeetings, allCampaigns] = await Promise.all([
+    airtableFetch<MeetingFields>("Meetings"),
+    airtableFetch<CampaignFields>("Campaigns"),
   ]);
+  const filteredMeetings = allMeetings.filter((m) => m.fields["Account"]?.includes(id));
+  const campaignRecords = allCampaigns.filter((c) => c.fields["Account"]?.includes(id));
 
   // Enrich meetings with campaign names
   const meetings: Meeting[] = await Promise.all(
-    allMeetings.map(async (m) => {
+    filteredMeetings.map(async (m) => {
       const campaignIds = m.fields["Campaign"] ?? [];
       let campaignName: string | undefined;
       if (campaignIds[0]) {
