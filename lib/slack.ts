@@ -78,13 +78,12 @@ export function buildMeetingBlocks(payload: MeetingSlackPayload) {
   };
 }
 
-async function findChannelId(client: WebClient, channelName: string): Promise<string | null> {
-  const normalized = normalizeChannel(channelName);
+async function listChannels(client: WebClient, types: string, normalized: string): Promise<string | null> {
   let cursor: string | undefined;
   do {
     const res = await client.conversations.list({
       exclude_archived: true,
-      types: "public_channel,private_channel",
+      types,
       limit: 200,
       ...(cursor ? { cursor } : {}),
     });
@@ -93,6 +92,19 @@ async function findChannelId(client: WebClient, channelName: string): Promise<st
     cursor = res.response_metadata?.next_cursor ?? undefined;
   } while (cursor);
   return null;
+}
+
+async function findChannelId(client: WebClient, channelName: string): Promise<string | null> {
+  const normalized = normalizeChannel(channelName);
+  try {
+    return await listChannels(client, "public_channel,private_channel", normalized);
+  } catch (e: unknown) {
+    const code = (e as { data?: { error?: string } }).data?.error;
+    if (code === "missing_scope") {
+      return await listChannels(client, "public_channel", normalized);
+    }
+    throw e;
+  }
 }
 
 async function sendViaWebhook(payload: MeetingSlackPayload): Promise<void> {

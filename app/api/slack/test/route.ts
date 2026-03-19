@@ -32,25 +32,40 @@ export async function POST(request: NextRequest) {
     const normalized = normalizeChannel(slackChannel);
     const displayChannel = `#${normalized}`;
 
-    // Step 1 — find private channel ID
+    // Step 1 — find channel ID (try both public+private, fall back to public-only)
+    async function findChannel(types: string): Promise<string | null> {
+      let cursor: string | undefined;
+      do {
+        const res = await client.conversations.list({
+          exclude_archived: true,
+          types,
+          limit: 200,
+          ...(cursor ? { cursor } : {}),
+        });
+        const found = res.channels?.find((c) => c.name === normalized);
+        if (found?.id) return found.id;
+        cursor = res.response_metadata?.next_cursor ?? undefined;
+      } while (cursor);
+      return null;
+    }
+
     let channelId: string | null = null;
-    let cursor: string | undefined;
-    do {
-      const res = await client.conversations.list({
-        exclude_archived: true,
-        types: "private_channel",
-        limit: 200,
-        ...(cursor ? { cursor } : {}),
-      });
-      const found = res.channels?.find((c) => c.name === normalized);
-      if (found?.id) { channelId = found.id; break; }
-      cursor = res.response_metadata?.next_cursor ?? undefined;
-    } while (cursor);
+    try {
+      channelId = await findChannel("public_channel,private_channel");
+    } catch (e: unknown) {
+      const code = (e as { data?: { error?: string } }).data?.error;
+      if (code === "missing_scope") {
+        // Bot lacks groups:read — try public channels only
+        channelId = await findChannel("public_channel");
+      } else {
+        throw e;
+      }
+    }
 
     if (!channelId) {
       return Response.json({
         success: false,
-        error: "Channel not found. Make sure the channel exists and the bot has been added to the workspace.",
+        error: "Channel not found. Make sure the channel name is correct and the bot is in the workspace.",
       });
     }
 
