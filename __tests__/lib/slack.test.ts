@@ -71,31 +71,31 @@ describe("normalizeChannel", () => {
 
 describe("buildMeetingBlocks", () => {
   const { blocks, text } = buildMeetingBlocks(BASE_PAYLOAD);
-  const section = blocks.find((b) => b.type === "section") as { fields: { text: string }[] };
+  const section = blocks.find((b) => b.type === "section") as { text: { text: string } };
+  const sectionText = section.text.text;
 
   it("contains correct attendee name", () => {
-    expect(section.fields.some((f) => f.text.includes("Alice Smith"))).toBe(true);
+    expect(sectionText).toContain("Alice Smith");
   });
 
   it("contains correct attendee company", () => {
-    expect(section.fields.some((f) => f.text.includes("Acme Corp"))).toBe(true);
+    expect(sectionText).toContain("Acme Corp");
   });
 
   it("contains correct campaign name", () => {
-    expect(section.fields.some((f) => f.text.includes("Spring Outreach"))).toBe(true);
+    expect(sectionText).toContain("Spring Outreach");
   });
 
   it("contains correct meeting taker", () => {
-    expect(section.fields.some((f) => f.text.includes("Bob Jones"))).toBe(true);
+    expect(sectionText).toContain("Bob Jones");
   });
 
   it("contains correct account name", () => {
-    expect(section.fields.some((f) => f.text.includes("Acme"))).toBe(true);
+    expect(sectionText).toContain("Acme");
   });
 
   it("contains human-readable date (not ISO)", () => {
-    const scheduled = section.fields.find((f) => f.text.startsWith("*Scheduled*"));
-    expect(scheduled?.text).not.toMatch(/\d{4}-\d{2}-\d{2}T/);
+    expect(sectionText).not.toMatch(/\d{4}-\d{2}-\d{2}T/);
   });
 
   it("plain text fallback contains all required fields", () => {

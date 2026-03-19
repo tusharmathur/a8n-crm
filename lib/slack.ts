@@ -44,14 +44,17 @@ export function buildMeetingBlocks(payload: MeetingSlackPayload) {
       },
       {
         type: "section",
-        fields: [
-          { type: "mrkdwn", text: `*Attendee*\n${attendeeName}` },
-          { type: "mrkdwn", text: `*Company*\n${attendeeCompany ?? "—"}` },
-          { type: "mrkdwn", text: `*Campaign*\n${campaignName ?? "—"}` },
-          { type: "mrkdwn", text: `*Meeting Taker*\n${meetingTaker ?? "—"}` },
-          { type: "mrkdwn", text: `*Scheduled*\n${formattedDate}` },
-          { type: "mrkdwn", text: `*Account*\n${accountName ?? "—"}` },
-        ],
+        text: {
+          type: "mrkdwn",
+          text: [
+            `*Attendee:* ${attendeeName}`,
+            `*Company:* ${attendeeCompany ?? "—"}`,
+            `*Campaign:* ${campaignName ?? "—"}`,
+            `*Meeting Taker:* ${meetingTaker ?? "—"}`,
+            `*Scheduled:* ${formattedDate}`,
+            `*Account:* ${accountName ?? "—"}`,
+          ].join("\n"),
+        },
       },
       ...(accountDashboardLink
         ? [
