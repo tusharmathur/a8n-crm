@@ -23,14 +23,14 @@ describe("GET /api/campaigns", () => {
 
   it("returns 401 when no session", async () => {
     mockAuth.mockResolvedValue(null as never);
-    const res = await GET();
+    const res = await GET(new (await import("next/server")).NextRequest("http://localhost/api/campaigns"));
     expect(res.status).toBe(401);
   });
 
   it("returns campaigns array", async () => {
     mockAuth.mockResolvedValue(mockSession as never);
     mockFetch.mockResolvedValue([{ id: "rec1", fields: { "Campaign Name": "Test", Account: [] }, createdTime: "" }] as never);
-    const res = await GET();
+    const res = await GET(new (await import("next/server")).NextRequest("http://localhost/api/campaigns"));
     expect(res.status).toBe(200);
     const data = await res.json();
     expect(Array.isArray(data)).toBe(true);
@@ -39,7 +39,7 @@ describe("GET /api/campaigns", () => {
   it("returns 500 on Airtable error", async () => {
     mockAuth.mockResolvedValue(mockSession as never);
     mockFetch.mockRejectedValue(new Error("error"));
-    const res = await GET();
+    const res = await GET(new (await import("next/server")).NextRequest("http://localhost/api/campaigns"));
     expect(res.status).toBe(500);
   });
 });

@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { airtableFetchOne, airtableFetch } from "@/lib/airtable";
-import { AccountFields, MeetingFields, CampaignFields, Meeting } from "@/types";
+import { AccountFields, MeetingFields, CampaignFields, Meeting, Campaign } from "@/types";
 import { Badge } from "@/components/ui/Badge";
 import { AccountDashboardClient } from "@/components/dashboard/AccountDashboardClient";
 import Link from "next/link";
@@ -37,11 +37,11 @@ export default async function AccountDashboardPage({ params }: Props) {
     );
   }
 
-  // Fetch meetings for this account
-  const allMeetings = await airtableFetch<MeetingFields>(
-    "Meetings",
-    `FIND("${id}", ARRAYJOIN({Account}))`
-  );
+  // Fetch meetings and campaigns for this account in parallel
+  const [allMeetings, campaignRecords] = await Promise.all([
+    airtableFetch<MeetingFields>("Meetings", `FIND("${id}", ARRAYJOIN({Account}))`),
+    airtableFetch<CampaignFields>("Campaigns", `FIND("${id}", ARRAYJOIN({Account})) > 0`),
+  ]);
 
   // Enrich meetings with campaign names
   const meetings: Meeting[] = await Promise.all(
@@ -55,6 +55,11 @@ export default async function AccountDashboardPage({ params }: Props) {
       return { ...m, accountName: account.fields["Name"], campaignName };
     })
   );
+
+  const campaigns: Campaign[] = campaignRecords.map((r) => ({
+    ...r,
+    accountName: account.fields["Name"],
+  }));
 
   const fields = account.fields;
 
@@ -116,7 +121,7 @@ export default async function AccountDashboardPage({ params }: Props) {
           )}
         </div>
 
-        <AccountDashboardClient meetings={meetings} accountId={id} />
+        <AccountDashboardClient meetings={meetings} campaigns={campaigns} accountId={id} />
       </div>
     </div>
   );

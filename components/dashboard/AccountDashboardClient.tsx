@@ -3,17 +3,19 @@
 import { useState } from "react";
 import { Toast, useToast } from "@/components/ui/Toast";
 import { MeetingsChart } from "./MeetingsChart";
+import { CampaignPerformanceSection } from "./CampaignPerformanceSection";
 import { getMeetingTitle, formatDate, groupMeetingsByMonth } from "@/lib/utils";
-import { Meeting } from "@/types";
+import { Meeting, Campaign } from "@/types";
 import Link from "next/link";
 
 interface AccountDashboardClientProps {
   meetings: Meeting[];
+  campaigns: Campaign[];
   accountId: string;
 }
 
 /** Client-side interactive parts of the account dashboard. */
-export function AccountDashboardClient({ meetings, accountId }: AccountDashboardClientProps) {
+export function AccountDashboardClient({ meetings, campaigns, accountId }: AccountDashboardClientProps) {
   const { toast, showToast, dismissToast } = useToast();
   const [copied, setCopied] = useState(false);
 
@@ -67,6 +69,9 @@ export function AccountDashboardClient({ meetings, accountId }: AccountDashboard
           <p className="text-sm font-mono text-[#94A3B8] truncate">{accountId}</p>
         </div>
       </div>
+
+      {/* Campaign performance */}
+      <CampaignPerformanceSection campaigns={campaigns} accountId={accountId} />
 
       {/* Chart */}
       <div className="bg-white border border-[#E2E8F0] rounded-[12px] p-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)] mb-6">

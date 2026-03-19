@@ -76,6 +76,31 @@ export function getMeetingTitle(params: {
 }
 
 /**
+ * Parse a rate string like "37.5%" to a 0–1 float.
+ * Returns 0 for "—", undefined, or non-numeric values.
+ */
+export function parseRate(rate?: string): number {
+  if (!rate || rate === "—") return 0;
+  const n = parseFloat(rate);
+  return isNaN(n) ? 0 : Math.min(n / 100, 1);
+}
+
+/**
+ * Compute average of rate strings (e.g. ["37.5%", "—", "50%"]),
+ * skipping "—" and invalid values.
+ * Returns formatted string like "44.0%" or "—" when no valid values.
+ */
+export function avgRate(rates: (string | undefined)[]): string {
+  const valid = rates
+    .filter((r): r is string => !!r && r !== "—")
+    .map((r) => parseFloat(r))
+    .filter((n) => !isNaN(n));
+  if (valid.length === 0) return "—";
+  const avg = valid.reduce((a, b) => a + b, 0) / valid.length;
+  return `${avg.toFixed(1)}%`;
+}
+
+/**
  * Group meetings by month for chart data.
  */
 export function groupMeetingsByMonth(

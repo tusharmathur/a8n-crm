@@ -4,12 +4,16 @@ import { airtableFetch, airtableFetchOne, airtableCreate } from "@/lib/airtable"
 import { writeAuditLog } from "@/lib/audit";
 import { CampaignFields, AccountFields } from "@/types";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   const session = await auth();
   if (!session) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
   try {
-    const records = await airtableFetch<CampaignFields>("Campaigns");
+    const accountId = request.nextUrl.searchParams.get("account");
+    const filterFormula = accountId
+      ? `FIND("${accountId}", ARRAYJOIN({Account})) > 0`
+      : undefined;
+    const records = await airtableFetch<CampaignFields>("Campaigns", filterFormula);
 
     // Enrich with account names
     const enriched = await Promise.all(
