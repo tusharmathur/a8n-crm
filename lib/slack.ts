@@ -40,7 +40,7 @@ export function buildMeetingBlocks(payload: MeetingSlackPayload) {
     blocks: [
       {
         type: "header",
-        text: { type: "plain_text", text: "📅 New Meeting Logged", emoji: true },
+        text: { type: "plain_text", text: "📅 New Meeting Set", emoji: true },
       },
       {
         type: "section",
@@ -77,7 +77,7 @@ export function buildMeetingBlocks(payload: MeetingSlackPayload) {
         elements: [{ type: "mrkdwn", text: "Posted by A8N CRM" }],
       },
     ],
-    text: `New meeting logged: ${attendeeName}${attendeeCompany ? ` from ${attendeeCompany}` : ""} — ${formattedDate}`,
+    text: `New meeting set: ${attendeeName}${attendeeCompany ? ` from ${attendeeCompany}` : ""} — ${formattedDate}`,
   };
 }
 
