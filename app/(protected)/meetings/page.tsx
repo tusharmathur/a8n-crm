@@ -4,7 +4,7 @@ import { MeetingFields, AccountFields, CampaignFields, Meeting } from "@/types";
 import Link from "next/link";
 import { TopBar } from "@/components/layout/TopBar";
 import { Button } from "@/components/ui/Button";
-import { getMeetingTitle, formatDate } from "@/lib/utils";
+import { MeetingsTable } from "@/components/tables/MeetingsTable";
 
 export default async function MeetingsPage() {
   const session = await auth();
@@ -54,62 +54,7 @@ export default async function MeetingsPage() {
             No meetings yet. Add your first meeting.
           </div>
         ) : (
-          <div className="bg-white border border-[#E2E8F0] rounded-[12px] overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
-            <table className="w-full text-sm">
-              <thead className="bg-[#F8FAFC] border-b border-[#E2E8F0]">
-                <tr>
-                  <th className="text-left px-4 py-3 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium">Meeting</th>
-                  <th className="text-left px-4 py-3 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium">Account</th>
-                  <th className="text-left px-4 py-3 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium">Campaign</th>
-                  <th className="text-left px-4 py-3 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium">Meeting Taker</th>
-                  <th className="text-left px-4 py-3 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium">Scheduled</th>
-                  <th className="text-left px-4 py-3 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {sorted.map((m, i) => {
-                  const title = getMeetingTitle({
-                    accountName: m.accountName,
-                    meetingTaker: m.fields["Meeting Taker"],
-                    attendeeName: m.fields["Attendee Name"],
-                    attendeeCompany: m.fields["Attendee Company"],
-                  });
-                  return (
-                    <tr
-                      key={m.id}
-                      className={`hover:bg-[#F8FAFC] ${i < sorted.length - 1 ? "border-b border-[#F1F5F9]" : ""}`}
-                    >
-                      <td className="px-4 py-3 font-semibold text-[#1E293B] max-w-[300px]">
-                        <span className="line-clamp-2">{title}</span>
-                      </td>
-                      <td className="px-4 py-3 text-[#64748B]">
-                        {m.accountName ? (
-                          <Link
-                            href={`/accounts/${m.fields["Account"]?.[0]}`}
-                            className="hover:text-[#F97316]"
-                          >
-                            {m.accountName}
-                          </Link>
-                        ) : "—"}
-                      </td>
-                      <td className="px-4 py-3 text-[#64748B]">{m.campaignName ?? "—"}</td>
-                      <td className="px-4 py-3 text-[#64748B]">{m.fields["Meeting Taker"] ?? "—"}</td>
-                      <td className="px-4 py-3 text-[#64748B]">
-                        {formatDate(m.fields["Scheduled Meeting Date"])}
-                      </td>
-                      <td className="px-4 py-3">
-                        <Link href={`/meetings/${m.id}/edit`}>
-                          <button className="text-xs border border-[#E2E8F0] rounded-md px-3 py-1 text-[#1E293B] hover:bg-[#F8FAFC]">
-                            Edit
-                          </button>
-                        </Link>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+          <MeetingsTable meetings={sorted} />
         )}
       </div>
     </div>

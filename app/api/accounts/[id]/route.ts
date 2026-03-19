@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { auth } from "@/auth";
-import { airtableFetchOne, airtableUpdate } from "@/lib/airtable";
+import { airtableFetchOne, airtableUpdate, airtableDelete } from "@/lib/airtable";
 import { writeAuditLog } from "@/lib/audit";
 import { AccountFields } from "@/types";
 
@@ -91,5 +91,39 @@ export async function PATCH(
   } catch (err) {
     console.error(err);
     return Response.json({ error: "Failed to update account" }, { status: 500 });
+  }
+}
+
+export async function DELETE(
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const session = await auth();
+  if (!session) return Response.json({ error: "Unauthorized" }, { status: 401 });
+
+  try {
+    const { id } = await params;
+
+    const record = await airtableFetchOne<AccountFields>("Accounts", id);
+    if (!record) return Response.json({ error: "Account not found" }, { status: 404 });
+
+    try {
+      await writeAuditLog({
+        action: "Deleted Account",
+        entityType: "Account",
+        entityName: record.fields["Name"],
+        entityId: id,
+        performedBy: session.user?.email ?? "unknown",
+        details: { snapshot: record.fields },
+      });
+    } catch (auditErr) {
+      console.error("Audit log failed:", auditErr);
+    }
+
+    await airtableDelete("Accounts", id);
+    return Response.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    return Response.json({ error: "Failed to delete account" }, { status: 500 });
   }
 }

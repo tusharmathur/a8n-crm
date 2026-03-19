@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { auth } from "@/auth";
-import { airtableFetchOne, airtableUpdate } from "@/lib/airtable";
+import { airtableFetchOne, airtableUpdate, airtableDelete } from "@/lib/airtable";
 import { writeAuditLog } from "@/lib/audit";
 import { MeetingFields, AccountFields, CampaignFields } from "@/types";
 
@@ -122,5 +122,39 @@ export async function PATCH(
   } catch (err) {
     console.error(err);
     return Response.json({ error: "Failed to update meeting" }, { status: 500 });
+  }
+}
+
+export async function DELETE(
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const session = await auth();
+  if (!session) return Response.json({ error: "Unauthorized" }, { status: 401 });
+
+  try {
+    const { id } = await params;
+
+    const record = await airtableFetchOne<MeetingFields>("Meetings", id);
+    if (!record) return Response.json({ error: "Meeting not found" }, { status: 404 });
+
+    try {
+      await writeAuditLog({
+        action: "Deleted Meeting",
+        entityType: "Meeting",
+        entityName: record.fields["Attendee Name"],
+        entityId: id,
+        performedBy: session.user?.email ?? "unknown",
+        details: { snapshot: record.fields },
+      });
+    } catch (auditErr) {
+      console.error("Audit log failed:", auditErr);
+    }
+
+    await airtableDelete("Meetings", id);
+    return Response.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    return Response.json({ error: "Failed to delete meeting" }, { status: 500 });
   }
 }
