@@ -1,0 +1,11 @@
+{
+  "headers": [
+    {
+      "source": "/client/(.*)",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive, nosnippet" },
+        { "key": "Cache-Control", "value": "no-store, no-cache, private" }
+      ]
+    }
+  ]
+}

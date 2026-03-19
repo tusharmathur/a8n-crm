@@ -12,18 +12,42 @@ interface AccountDashboardClientProps {
   meetings: Meeting[];
   campaigns: Campaign[];
   accountId: string;
+  dashboardLink?: string;
 }
 
 /** Client-side interactive parts of the account dashboard. */
-export function AccountDashboardClient({ meetings, campaigns, accountId }: AccountDashboardClientProps) {
+export function AccountDashboardClient({ meetings, campaigns, accountId, dashboardLink: initialDashboardLink }: AccountDashboardClientProps) {
   const { toast, showToast, dismissToast } = useToast();
   const [copied, setCopied] = useState(false);
+  const [dashboardLink, setDashboardLink] = useState(initialDashboardLink ?? "");
+  const [generating, setGenerating] = useState(false);
 
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href);
     setCopied(true);
     showToast("Link copied!");
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleCopyDashboardLink = () => {
+    navigator.clipboard.writeText(dashboardLink);
+    showToast("Link copied!");
+  };
+
+  const handleGenerateLink = async () => {
+    setGenerating(true);
+    try {
+      const res = await fetch(`/api/accounts/${accountId}/generate-link`, { method: "POST" });
+      if (res.ok) {
+        const data = await res.json();
+        setDashboardLink(data.dashboardLink);
+        showToast("Dashboard link generated!");
+      } else {
+        showToast("Failed to generate link.");
+      }
+    } finally {
+      setGenerating(false);
+    }
   };
 
   const chartData = groupMeetingsByMonth(
@@ -39,7 +63,7 @@ export function AccountDashboardClient({ meetings, campaigns, accountId }: Accou
   return (
     <>
       {/* Action bar */}
-      <div className="flex items-center gap-3 mb-6">
+      <div className="flex items-center gap-3 mb-4">
         <Link
           href="/accounts"
           className="text-sm text-[#64748B] hover:text-[#1E293B] flex items-center gap-1"
@@ -52,6 +76,42 @@ export function AccountDashboardClient({ meetings, campaigns, accountId }: Accou
         >
           🔗 {copied ? "Link copied!" : "Share Link"}
         </button>
+      </div>
+
+      {/* Client dashboard link row */}
+      <div className="bg-white border border-[#E2E8F0] rounded-[10px] px-4 py-3 mb-6 flex items-center gap-3 flex-wrap">
+        <span className="text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium flex-shrink-0">
+          Client Dashboard Link
+        </span>
+        {dashboardLink ? (
+          <>
+            <span className="text-xs text-[#64748B] font-mono truncate max-w-xs flex-1">
+              {dashboardLink}
+            </span>
+            <button
+              onClick={handleCopyDashboardLink}
+              className="text-xs border border-[#E2E8F0] rounded-md px-2.5 py-1 text-[#1E293B] hover:bg-[#F8FAFC] flex-shrink-0"
+            >
+              Copy Link
+            </button>
+            <a
+              href={dashboardLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs border border-[#E2E8F0] rounded-md px-2.5 py-1 text-[#1E293B] hover:bg-[#F8FAFC] flex-shrink-0"
+            >
+              Open
+            </a>
+          </>
+        ) : (
+          <button
+            onClick={handleGenerateLink}
+            disabled={generating}
+            className="text-xs border border-[#E2E8F0] rounded-md px-2.5 py-1 text-[#1E293B] hover:bg-[#F8FAFC] disabled:opacity-50"
+          >
+            {generating ? "Generating…" : "Generate Link"}
+          </button>
+        )}
       </div>
 
       {/* Stat row */}

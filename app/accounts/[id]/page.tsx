@@ -125,7 +125,12 @@ export default async function AccountDashboardPage({ params }: Props) {
           )}
         </div>
 
-        <AccountDashboardClient meetings={meetings} campaigns={campaigns} accountId={id} />
+        <AccountDashboardClient
+          meetings={meetings}
+          campaigns={campaigns}
+          accountId={id}
+          dashboardLink={fields["Dashboard Link"]}
+        />
       </div>
     </div>
   );

@@ -1,8 +1,9 @@
 import { NextRequest } from "next/server";
 import { auth } from "@/auth";
-import { airtableFetch, airtableCreate } from "@/lib/airtable";
+import { airtableFetch, airtableCreate, airtableUpdate } from "@/lib/airtable";
 import { writeAuditLog } from "@/lib/audit";
 import { AccountFields } from "@/types";
+import { generateDashboardToken } from "@/lib/token";
 
 export async function GET() {
   const session = await auth();
@@ -40,6 +41,19 @@ export async function POST(request: NextRequest) {
     };
 
     const record = await airtableCreate<AccountFields>("Accounts", fields);
+
+    // Auto-generate dashboard link after account creation
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+    if (appUrl) {
+      try {
+        const token = generateDashboardToken();
+        const dashboardLink = `${appUrl}/client/${record.id}?token=${token}`;
+        await airtableUpdate<AccountFields>("Accounts", record.id, { "Dashboard Link": dashboardLink });
+        record.fields["Dashboard Link"] = dashboardLink;
+      } catch (linkErr) {
+        console.error("Failed to generate dashboard link:", linkErr);
+      }
+    }
 
     await writeAuditLog({
       action: "Created Account",

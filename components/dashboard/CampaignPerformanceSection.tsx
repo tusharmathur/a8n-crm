@@ -5,6 +5,7 @@ import { parseRate, avgRate } from "@/lib/utils";
 interface CampaignPerformanceSectionProps {
   campaigns: Campaign[];
   accountId: string;
+  readOnly?: boolean;
 }
 
 function ProgressBar({ value, color }: { value: number; color: string }) {
@@ -23,7 +24,7 @@ function ProgressBar({ value, color }: { value: number; color: string }) {
   );
 }
 
-export function CampaignPerformanceSection({ campaigns, accountId }: CampaignPerformanceSectionProps) {
+export function CampaignPerformanceSection({ campaigns, accountId, readOnly }: CampaignPerformanceSectionProps) {
   const totalRequestsSent = campaigns.reduce(
     (sum, c) => sum + (c.fields["Requests Sent"] ?? 0),
     0
@@ -40,12 +41,14 @@ export function CampaignPerformanceSection({ campaigns, accountId }: CampaignPer
       {campaigns.length === 0 ? (
         <div className="text-center py-6">
           <p className="text-[#94A3B8] text-sm mb-3">No campaigns linked to this account yet.</p>
-          <Link
-            href={`/campaigns/new`}
-            className="inline-flex items-center gap-1 text-sm border border-[#E2E8F0] rounded-md px-3 py-1.5 text-[#1E293B] hover:bg-[#F8FAFC]"
-          >
-            + New Campaign
-          </Link>
+          {!readOnly && (
+            <Link
+              href={`/campaigns/new`}
+              className="inline-flex items-center gap-1 text-sm border border-[#E2E8F0] rounded-md px-3 py-1.5 text-[#1E293B] hover:bg-[#F8FAFC]"
+            >
+              + New Campaign
+            </Link>
+          )}
         </div>
       ) : (
         <>

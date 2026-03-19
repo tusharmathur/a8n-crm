@@ -14,6 +14,7 @@ export interface AccountFields {
   "Main Contact Name"?: string;
   Address?: string;
   "Engagement Goals"?: string;
+  "Dashboard Link"?: string;
 }
 
 export type Account = AirtableRecord<AccountFields>;
@@ -49,6 +50,7 @@ export interface MeetingFields {
   "Attendee LinkedIn"?: string;
   "Attendee Company"?: string;
   "Attendee Background"?: string;
+  "Outcome / Next Steps"?: string;
 }
 
 export interface Meeting extends AirtableRecord<MeetingFields> {
