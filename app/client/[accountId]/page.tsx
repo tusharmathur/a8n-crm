@@ -1,6 +1,6 @@
 import { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
+import { A8NBadge } from "@/components/ui/A8NBadge";
 import { airtableFetchOne, airtableFetch } from "@/lib/airtable";
 import { AccountFields, CampaignFields, MeetingFields, Campaign } from "@/types";
 import { extractTokenFromLink, timingSafeCompare } from "@/lib/token";
@@ -28,14 +28,9 @@ function ErrorPage({ message }: { message: string }) {
   return (
     <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center">
       <div className="bg-white border border-[#E2E8F0] rounded-[12px] p-10 text-center shadow-sm max-w-sm">
-        <Image
-          src="https://www.acceler8now.com/hubfs/acceler8now_2021/images/logo.svg"
-          alt="A8N"
-          width={40}
-          height={40}
-          className="h-10 w-auto mx-auto mb-4"
-          unoptimized
-        />
+        <div className="flex justify-center mb-4">
+          <A8NBadge size={40} />
+        </div>
         <p className="text-[#1E293B] font-semibold mb-2">{message}</p>
         <p className="text-sm text-[#64748B]">
           Contact your Acceler8Now representative for access.
@@ -90,15 +85,8 @@ export default async function ClientDashboardPage({ params, searchParams }: Prop
           rel="noopener noreferrer"
           className="flex items-center gap-2"
         >
-          <Image
-            src="https://www.acceler8now.com/hubfs/acceler8now_2021/images/logo.svg"
-            alt="A8N"
-            width={32}
-            height={32}
-            className="h-8 w-auto"
-            unoptimized
-          />
-          <span className="text-sm font-bold text-[#1E293B]">A8N CRM</span>
+          <A8NBadge size={32} />
+          <span style={{ fontSize: 16, fontWeight: 700, color: "#1E293B" }}>CRM</span>
         </a>
         <span className="ml-auto text-[11px] bg-[#F1F5F9] text-[#94A3B8] rounded-md px-2 py-1">
           Read-only view

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
-import Image from "next/image";
+import { A8NBadge } from "@/components/ui/A8NBadge";
 import { getInitials } from "@/lib/utils";
 
 interface SidebarProps {
@@ -47,15 +47,8 @@ export function Sidebar({ userName = "", userEmail = "" }: SidebarProps) {
       {/* Logo + App name */}
       <div className="px-4 py-4 border-b border-[#E2E8F0]">
         <Link href="/accounts" className="flex items-center gap-2">
-          <Image
-            src="https://www.acceler8now.com/hubfs/acceler8now_2021/images/logo.svg"
-            alt="A8N"
-            width={32}
-            height={32}
-            className="h-8 w-auto"
-            unoptimized
-          />
-          <span className="text-sm font-bold text-[#1E293B]">A8N CRM</span>
+          <A8NBadge size={32} />
+          <span style={{ fontSize: 16, fontWeight: 700, color: "#1E293B" }}>CRM</span>
         </Link>
       </div>
 

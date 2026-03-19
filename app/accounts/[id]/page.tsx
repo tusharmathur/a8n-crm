@@ -3,8 +3,8 @@ import { airtableFetchOne, airtableFetch } from "@/lib/airtable";
 import { AccountFields, MeetingFields, CampaignFields, Meeting, Campaign } from "@/types";
 import { Badge } from "@/components/ui/Badge";
 import { AccountDashboardClient } from "@/components/dashboard/AccountDashboardClient";
+import { A8NBadge } from "@/components/ui/A8NBadge";
 import Link from "next/link";
-import Image from "next/image";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -72,15 +72,8 @@ export default async function AccountDashboardPage({ params }: Props) {
       {/* Minimal header for public page */}
       <header className="bg-white border-b border-[#E2E8F0] h-14 flex items-center px-6">
         <Link href="/accounts" className="flex items-center gap-2">
-          <Image
-            src="https://www.acceler8now.com/hubfs/acceler8now_2021/images/logo.svg"
-            alt="A8N"
-            width={32}
-            height={32}
-            className="h-8 w-auto"
-            unoptimized
-          />
-          <span className="text-sm font-bold text-[#1E293B]">A8N CRM</span>
+          <A8NBadge size={32} />
+          <span style={{ fontSize: 16, fontWeight: 700, color: "#1E293B" }}>CRM</span>
         </Link>
       </header>
 
