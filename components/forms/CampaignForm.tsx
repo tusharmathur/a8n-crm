@@ -5,24 +5,26 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Input, Label, Textarea, Select } from "@/components/ui/Input";
 import { Toast, useToast } from "@/components/ui/Toast";
-import { Account } from "@/types";
+import { Account, Campaign } from "@/types";
 
 interface CampaignFormProps {
   accounts: Account[];
+  mode?: "create" | "edit";
+  initialValues?: Campaign;
+  recordId?: string;
 }
 
-/** Form for creating a new campaign. */
-export function CampaignForm({ accounts }: CampaignFormProps) {
+export function CampaignForm({ accounts, mode = "create", initialValues, recordId }: CampaignFormProps) {
   const router = useRouter();
   const { toast, showToast, dismissToast } = useToast();
 
   const [form, setForm] = useState({
-    "Campaign Name": "",
-    Account: "",
-    Purpose: "",
-    "Requests Sent": "",
-    "Requests Accepted": "",
-    Replies: "",
+    "Campaign Name": initialValues?.fields["Campaign Name"] ?? "",
+    Account: initialValues?.fields["Account"]?.[0] ?? "",
+    Purpose: initialValues?.fields["Purpose"] ?? "",
+    "Requests Sent": initialValues?.fields["Requests Sent"]?.toString() ?? "",
+    "Requests Accepted": initialValues?.fields["Requests Accepted"]?.toString() ?? "",
+    Replies: initialValues?.fields["Replies"]?.toString() ?? "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [apiError, setApiError] = useState("");
@@ -47,6 +49,9 @@ export function CampaignForm({ accounts }: CampaignFormProps) {
     setApiError("");
 
     try {
+      const url = mode === "edit" ? `/api/campaigns/${recordId}` : "/api/campaigns";
+      const method = mode === "edit" ? "PATCH" : "POST";
+
       const payload = {
         "Campaign Name": form["Campaign Name"].trim(),
         Account: [form.Account],
@@ -56,19 +61,19 @@ export function CampaignForm({ accounts }: CampaignFormProps) {
         ...(form.Replies && { Replies: Number(form.Replies) }),
       };
 
-      const res = await fetch("/api/campaigns", {
-        method: "POST",
+      const res = await fetch(url, {
+        method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
         const data = await res.json();
-        setApiError(data.error ?? "Failed to create campaign");
+        setApiError(data.error ?? (mode === "edit" ? "Failed to update campaign" : "Failed to create campaign"));
         return;
       }
 
-      showToast("Campaign created");
+      showToast(mode === "edit" ? "Changes saved" : "Campaign created");
       setTimeout(() => router.push("/campaigns"), 1000);
     } catch {
       setApiError("An unexpected error occurred");
@@ -160,7 +165,7 @@ export function CampaignForm({ accounts }: CampaignFormProps) {
 
         <div className="flex gap-3 mt-6">
           <Button type="submit" variant="primary" loading={loading}>
-            Create Campaign
+            {mode === "edit" ? "Save Changes" : "Create Campaign"}
           </Button>
           <Button type="button" variant="secondary" onClick={() => router.back()}>
             Cancel

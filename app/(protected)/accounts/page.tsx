@@ -72,11 +72,18 @@ export default async function AccountsPage() {
                       {account.fields["Main Contact Name"] ?? "—"}
                     </td>
                     <td className="px-4 py-3">
-                      <Link href={`/accounts/${account.id}`}>
-                        <button className="text-xs border border-[#E2E8F0] rounded-md px-3 py-1 text-[#1E293B] hover:bg-[#F8FAFC]">
-                          View
-                        </button>
-                      </Link>
+                      <div className="flex gap-2">
+                        <Link href={`/accounts/${account.id}`}>
+                          <button className="text-xs border border-[#E2E8F0] rounded-md px-3 py-1 text-[#1E293B] hover:bg-[#F8FAFC]">
+                            View
+                          </button>
+                        </Link>
+                        <Link href={`/accounts/${account.id}/edit`}>
+                          <button className="text-xs border border-[#E2E8F0] rounded-md px-3 py-1 text-[#1E293B] hover:bg-[#F8FAFC]">
+                            Edit
+                          </button>
+                        </Link>
+                      </div>
                     </td>
                   </tr>
                 ))}

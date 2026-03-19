@@ -51,6 +51,7 @@ export default async function CampaignsPage() {
                   <th className="text-left px-4 py-3 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium">Replies</th>
                   <th className="text-left px-4 py-3 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium">Acceptance Rate</th>
                   <th className="text-left px-4 py-3 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium">Reply Rate</th>
+                  <th className="text-left px-4 py-3 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -68,6 +69,13 @@ export default async function CampaignsPage() {
                     <td className="px-4 py-3 text-[#64748B]">{c.fields["Replies"] ?? "—"}</td>
                     <td className="px-4 py-3 text-[#64748B]">{c.fields["Acceptance Rate"] ?? "—"}</td>
                     <td className="px-4 py-3 text-[#64748B]">{c.fields["Reply Rate"] ?? "—"}</td>
+                    <td className="px-4 py-3">
+                      <Link href={`/campaigns/${c.id}/edit`}>
+                        <button className="text-xs border border-[#E2E8F0] rounded-md px-3 py-1 text-[#1E293B] hover:bg-[#F8FAFC]">
+                          Edit
+                        </button>
+                      </Link>
+                    </td>
                   </tr>
                 ))}
               </tbody>

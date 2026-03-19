@@ -5,20 +5,26 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Input, Label, Select, Textarea } from "@/components/ui/Input";
 import { Toast, useToast } from "@/components/ui/Toast";
+import { Account } from "@/types";
 
-/** Form for creating a new account. */
-export function AccountForm() {
+interface AccountFormProps {
+  mode?: "create" | "edit";
+  initialValues?: Account;
+  recordId?: string;
+}
+
+export function AccountForm({ mode = "create", initialValues, recordId }: AccountFormProps) {
   const router = useRouter();
   const { toast, showToast, dismissToast } = useToast();
 
   const [form, setForm] = useState({
-    Name: "",
-    Status: "",
-    Website: "",
-    "Account Owner": "",
-    "Main Contact Name": "",
-    Address: "",
-    "Engagement Goals": "",
+    Name: initialValues?.fields["Name"] ?? "",
+    Status: initialValues?.fields["Status"] ?? "",
+    Website: initialValues?.fields["Website"] ?? "",
+    "Account Owner": initialValues?.fields["Account Owner"] ?? "",
+    "Main Contact Name": initialValues?.fields["Main Contact Name"] ?? "",
+    Address: initialValues?.fields["Address"] ?? "",
+    "Engagement Goals": initialValues?.fields["Engagement Goals"] ?? "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [apiError, setApiError] = useState("");
@@ -42,19 +48,22 @@ export function AccountForm() {
     setApiError("");
 
     try {
-      const res = await fetch("/api/accounts", {
-        method: "POST",
+      const url = mode === "edit" ? `/api/accounts/${recordId}` : "/api/accounts";
+      const method = mode === "edit" ? "PATCH" : "POST";
+
+      const res = await fetch(url, {
+        method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
 
       if (!res.ok) {
         const data = await res.json();
-        setApiError(data.error ?? "Failed to create account");
+        setApiError(data.error ?? (mode === "edit" ? "Failed to update account" : "Failed to create account"));
         return;
       }
 
-      showToast("Account created");
+      showToast(mode === "edit" ? "Changes saved" : "Account created");
       setTimeout(() => router.push("/accounts"), 1000);
     } catch {
       setApiError("An unexpected error occurred");
@@ -145,7 +154,7 @@ export function AccountForm() {
 
         <div className="flex gap-3 mt-6">
           <Button type="submit" variant="primary" loading={loading}>
-            Create Account
+            {mode === "edit" ? "Save Changes" : "Create Account"}
           </Button>
           <Button
             type="button"

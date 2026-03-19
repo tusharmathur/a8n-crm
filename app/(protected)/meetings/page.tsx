@@ -63,6 +63,7 @@ export default async function MeetingsPage() {
                   <th className="text-left px-4 py-3 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium">Campaign</th>
                   <th className="text-left px-4 py-3 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium">Meeting Taker</th>
                   <th className="text-left px-4 py-3 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium">Scheduled</th>
+                  <th className="text-left px-4 py-3 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -95,6 +96,13 @@ export default async function MeetingsPage() {
                       <td className="px-4 py-3 text-[#64748B]">{m.fields["Meeting Taker"] ?? "—"}</td>
                       <td className="px-4 py-3 text-[#64748B]">
                         {formatDate(m.fields["Scheduled Meeting Date"])}
+                      </td>
+                      <td className="px-4 py-3">
+                        <Link href={`/meetings/${m.id}/edit`}>
+                          <button className="text-xs border border-[#E2E8F0] rounded-md px-3 py-1 text-[#1E293B] hover:bg-[#F8FAFC]">
+                            Edit
+                          </button>
+                        </Link>
                       </td>
                     </tr>
                   );

@@ -6,30 +6,43 @@ import { Button } from "@/components/ui/Button";
 import { Input, Label, Textarea, Select } from "@/components/ui/Input";
 import { Toast, useToast } from "@/components/ui/Toast";
 import { Spinner } from "@/components/ui/Spinner";
-import { Account, Campaign } from "@/types";
+import { Account, Campaign, Meeting } from "@/types";
+
+/** Convert ISO date string to datetime-local input format (YYYY-MM-DDTHH:MM) */
+function toDatetimeLocal(iso?: string): string {
+  if (!iso) return "";
+  try {
+    return new Date(iso).toISOString().slice(0, 16);
+  } catch {
+    return "";
+  }
+}
 
 interface MeetingFormProps {
   accounts: Account[];
   campaigns: Campaign[];
+  mode?: "create" | "edit";
+  initialValues?: Meeting;
+  recordId?: string;
 }
 
-/** Form for creating a new meeting, with AI background generation. */
-export function MeetingForm({ accounts, campaigns }: MeetingFormProps) {
+/** Form for creating or editing a meeting, with AI background generation. */
+export function MeetingForm({ accounts, campaigns, mode = "create", initialValues, recordId }: MeetingFormProps) {
   const router = useRouter();
   const { toast, showToast, dismissToast } = useToast();
 
   const [form, setForm] = useState({
-    Account: "",
-    Campaign: "",
-    "Scheduled Meeting Date": "",
-    "Meeting Taker": "",
-    "Meeting Taker Email": "",
-    "Attendee Name": "",
-    "Attendee Email": "",
-    "Attendee Phone": "",
-    "Attendee LinkedIn": "",
-    "Attendee Company": "",
-    "Attendee Background": "",
+    Account: initialValues?.fields["Account"]?.[0] ?? "",
+    Campaign: initialValues?.fields["Campaign"]?.[0] ?? "",
+    "Scheduled Meeting Date": toDatetimeLocal(initialValues?.fields["Scheduled Meeting Date"]),
+    "Meeting Taker": initialValues?.fields["Meeting Taker"] ?? "",
+    "Meeting Taker Email": initialValues?.fields["Meeting Taker Email"] ?? "",
+    "Attendee Name": initialValues?.fields["Attendee Name"] ?? "",
+    "Attendee Email": initialValues?.fields["Attendee Email"] ?? "",
+    "Attendee Phone": initialValues?.fields["Attendee Phone"] ?? "",
+    "Attendee LinkedIn": initialValues?.fields["Attendee LinkedIn"] ?? "",
+    "Attendee Company": initialValues?.fields["Attendee Company"] ?? "",
+    "Attendee Background": initialValues?.fields["Attendee Background"] ?? "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [apiError, setApiError] = useState("");
@@ -90,6 +103,9 @@ export function MeetingForm({ accounts, campaigns }: MeetingFormProps) {
     setApiError("");
 
     try {
+      const url = mode === "edit" ? `/api/meetings/${recordId}` : "/api/meetings";
+      const method = mode === "edit" ? "PATCH" : "POST";
+
       const payload = {
         "Attendee Name": form["Attendee Name"].trim(),
         Account: [form.Account],
@@ -104,19 +120,19 @@ export function MeetingForm({ accounts, campaigns }: MeetingFormProps) {
         ...(form["Attendee Background"] && { "Attendee Background": form["Attendee Background"] }),
       };
 
-      const res = await fetch("/api/meetings", {
-        method: "POST",
+      const res = await fetch(url, {
+        method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
         const data = await res.json();
-        setApiError(data.error ?? "Failed to create meeting");
+        setApiError(data.error ?? (mode === "edit" ? "Failed to update meeting" : "Failed to create meeting"));
         return;
       }
 
-      showToast("Meeting created");
+      showToast(mode === "edit" ? "Changes saved" : "Meeting created");
       setTimeout(() => router.push("/meetings"), 1000);
     } catch {
       setApiError("An unexpected error occurred");
@@ -261,7 +277,7 @@ export function MeetingForm({ accounts, campaigns }: MeetingFormProps) {
                 Generating…
               </>
             ) : (
-              <>✨ Generate Background</>
+              <>✨ {mode === "edit" ? "Regenerate Background" : "Generate Background"}</>
             )}
           </button>
           {generateError && (
@@ -284,7 +300,7 @@ export function MeetingForm({ accounts, campaigns }: MeetingFormProps) {
 
         <div className="flex gap-3 mt-6">
           <Button type="submit" variant="primary" loading={loading}>
-            Create Meeting
+            {mode === "edit" ? "Save Changes" : "Create Meeting"}
           </Button>
           <Button type="button" variant="secondary" onClick={() => router.back()}>
             Cancel

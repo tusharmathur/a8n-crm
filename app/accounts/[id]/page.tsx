@@ -83,6 +83,12 @@ export default async function AccountDashboardPage({ params }: Props) {
             {fields["Status"] && (
               <Badge value={fields["Status"]}>{fields["Status"]}</Badge>
             )}
+            <Link
+              href={`/accounts/${id}/edit`}
+              className="ml-auto text-xs border border-[#E2E8F0] rounded-md px-3 py-1.5 text-[#1E293B] hover:bg-[#F8FAFC]"
+            >
+              Edit Account
+            </Link>
           </div>
           <div className="flex flex-wrap gap-4 text-sm text-[#64748B]">
             {fields["Address"] && (
