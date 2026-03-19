@@ -5,9 +5,6 @@ import { AccountFields } from "@/types";
 import { WebClient } from "@slack/web-api";
 import { normalizeChannel } from "@/lib/slack";
 
-// Cached bot user ID — resolved once per lambda instance
-let cachedBotUserId: string | null = null;
-
 export async function POST(request: NextRequest) {
   const session = await auth();
   if (!session) return Response.json({ error: "Unauthorized" }, { status: 401 });
@@ -55,7 +52,6 @@ export async function POST(request: NextRequest) {
     } catch (e: unknown) {
       const code = (e as { data?: { error?: string } }).data?.error;
       if (code === "missing_scope") {
-        // Bot lacks groups:read — try public channels only
         channelId = await findChannel("public_channel");
       } else {
         throw e;
@@ -69,66 +65,46 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Step 2 — join the channel (public: conversations.join; private: conversations.invite)
-    let botInvited = false;
-    const alreadyIn = new Set(["already_in_channel", "cant_invite_self", "is_bot", "method_not_supported_for_channel_type"]);
-
+    // Step 2 — send test message directly; if bot not in channel, return helpful error
     try {
-      await client.conversations.join({ channel: channelId });
-      botInvited = true;
-    } catch (joinErr: unknown) {
-      const joinCode = (joinErr as { data?: { error?: string } }).data?.error;
-      if (joinCode === "method_not_supported_for_channel_type") {
-        // Private channel — invite the bot user instead
-        if (!cachedBotUserId) {
-          const authRes = await client.auth.test();
-          cachedBotUserId = authRes.user_id as string;
-        }
-        try {
-          await client.conversations.invite({ channel: channelId, users: cachedBotUserId });
-          botInvited = true;
-        } catch (inviteErr: unknown) {
-          const inviteCode = (inviteErr as { data?: { error?: string } }).data?.error;
-          if (!alreadyIn.has(inviteCode ?? "")) {
-            const errMsg = (inviteErr as { message?: string }).message ?? "Failed to join channel";
-            return Response.json({ success: false, error: errMsg });
-          }
-        }
-      } else if (!alreadyIn.has(joinCode ?? "")) {
-        const errMsg = (joinErr as { message?: string }).message ?? "Failed to join channel";
-        return Response.json({ success: false, error: errMsg });
+      await client.chat.postMessage({
+        channel: channelId,
+        blocks: [
+          {
+            type: "header",
+            text: { type: "plain_text", text: "🔔 Test from A8N CRM", emoji: true },
+          },
+          {
+            type: "section",
+            text: {
+              type: "mrkdwn",
+              text: `Slack notifications are configured correctly for *${account.fields["Name"]}*.`,
+            },
+          },
+          {
+            type: "context",
+            elements: [
+              {
+                type: "mrkdwn",
+                text: `Sent via Test Slack button by ${session.user?.email ?? "unknown"}`,
+              },
+            ],
+          },
+        ],
+        text: `Test from A8N CRM — notifications configured for ${account.fields["Name"]}`,
+      });
+    } catch (postErr: unknown) {
+      const postCode = (postErr as { data?: { error?: string } }).data?.error;
+      if (postCode === "not_in_channel") {
+        return Response.json({
+          success: false,
+          error: `Bot is not in ${displayChannel}. Please /invite @YourBotName to the channel in Slack, then retry.`,
+        });
       }
+      throw postErr;
     }
 
-    // Step 3 — send test message
-    await client.chat.postMessage({
-      channel: channelId,
-      blocks: [
-        {
-          type: "header",
-          text: { type: "plain_text", text: "🔔 Test from A8N CRM", emoji: true },
-        },
-        {
-          type: "section",
-          text: {
-            type: "mrkdwn",
-            text: `Slack notifications are configured correctly for *${account.fields["Name"]}*.`,
-          },
-        },
-        {
-          type: "context",
-          elements: [
-            {
-              type: "mrkdwn",
-              text: `Sent via Test Slack button by ${session.user?.email ?? "unknown"}`,
-            },
-          ],
-        },
-      ],
-      text: `Test from A8N CRM — notifications configured for ${account.fields["Name"]}`,
-    });
-
-    return Response.json({ success: true, channel: displayChannel, botInvited });
+    return Response.json({ success: true, channel: displayChannel });
   } catch (err) {
     console.error(err);
     const message = err instanceof Error ? err.message : "Failed to send test message";
