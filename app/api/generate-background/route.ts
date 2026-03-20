@@ -29,13 +29,14 @@ export async function POST(request: NextRequest) {
 
     const message = await client.messages.create({
       model: "claude-sonnet-4-20250514",
-      max_tokens: 300,
+      max_tokens: 400,
       system:
-        "You are a research assistant for a B2B sales team. Generate concise, professional background briefs about meeting attendees to help the team prepare. Be factual and practical. 3-5 sentences max.",
+        "You are a research assistant for a B2B sales team. Generate concise, professional background briefs to help the team prepare for meetings. Be factual and practical.",
       messages: [
         {
           role: "user",
-          content: `Generate a background brief focused on this individual meeting attendee:
+          content: `Generate a background brief for this meeting attendee.
+
 Name: ${attendeeName}
 Email: ${attendeeEmail ?? "N/A"}
 LinkedIn: ${attendeeLinkedIn ?? "N/A"}
@@ -44,7 +45,18 @@ Attendee's company: ${attendeeCompany ?? accountName ?? "N/A"}
 We are meeting them on behalf of: ${accountName ?? "N/A"}
 Campaign context: ${campaignName ?? "N/A"} — ${campaignPurpose ?? "N/A"}
 
-Focus on the PERSON: their likely role, seniority, professional background, and why they may have agreed to this meeting. Do not write about the company in general — write about this individual. Be concise and practical. 3-5 sentences.`,
+Format your response exactly like this:
+
+**Company**
+2 sentences on what the attendee's company does and who their customers are.
+
+**About [First Name]**
+• Bullet on their likely role and seniority
+• Bullet on their professional background
+• Bullet on why they likely agreed to this meeting
+• Bullet on anything relevant to the campaign context
+
+Keep it concise and practical. No fluff.`,
         },
       ],
     });
