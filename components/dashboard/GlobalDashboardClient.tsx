@@ -7,6 +7,7 @@ import { getMeetingTitle, formatDate, groupMeetingsByMonth } from "@/lib/utils";
 import { Account, Meeting, Campaign } from "@/types";
 import { Select, Label } from "@/components/ui/Input";
 import { Badge } from "@/components/ui/Badge";
+import Link from "next/link";
 
 interface GlobalDashboardClientProps {
   accounts: Account[];
@@ -101,7 +102,9 @@ export function GlobalDashboardClient({ accounts, initialMeetings, initialCampai
               });
               return (
                 <div key={m.id} className="py-3 flex items-start justify-between gap-4">
-                  <p className="font-semibold text-sm text-[#1E293B] truncate">{title}</p>
+                  <Link href={`/meetings/${m.id}`} className="font-semibold text-sm text-[#F97316] hover:underline truncate">
+                    {m.fields["Attendee Name"]}
+                  </Link>
                   <span className="text-xs bg-[#F1F5F9] text-[#64748B] rounded-full px-2 py-1 flex-shrink-0">
                     {formatDate(m.fields["Meeting Creation Date"])}
                   </span>

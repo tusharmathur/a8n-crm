@@ -9,6 +9,7 @@ export interface MeetingSlackPayload {
   accountName?: string;
   accountDashboardLink?: string;
   slackChannel?: string;
+  meetingId?: string;
 }
 
 export function formatMeetingDate(dateStr?: string): string {
@@ -33,8 +34,9 @@ export function normalizeChannel(channel: string): string {
 }
 
 export function buildMeetingBlocks(payload: MeetingSlackPayload) {
-  const { attendeeName, attendeeCompany, campaignName, scheduledDate, meetingTaker, accountName, accountDashboardLink } = payload;
+  const { attendeeName, attendeeCompany, campaignName, scheduledDate, meetingTaker, accountName, accountDashboardLink, meetingId } = payload;
   const formattedDate = formatMeetingDate(scheduledDate);
+  const meetingUrl = meetingId ? `${process.env.NEXT_PUBLIC_APP_URL}/meetings/${meetingId}` : undefined;
 
   return {
     blocks: [
@@ -56,17 +58,22 @@ export function buildMeetingBlocks(payload: MeetingSlackPayload) {
           ].join("\n"),
         },
       },
-      ...(accountDashboardLink
+      ...((accountDashboardLink || meetingUrl)
         ? [
             {
               type: "actions",
               elements: [
-                {
+                ...(accountDashboardLink ? [{
                   type: "button",
                   text: { type: "plain_text", text: "View Account Dashboard", emoji: true },
                   url: accountDashboardLink,
                   style: "primary",
-                },
+                }] : []),
+                ...(meetingUrl ? [{
+                  type: "button",
+                  text: { type: "plain_text", text: "View Meeting →", emoji: false },
+                  url: meetingUrl,
+                }] : []),
               ],
             },
           ]
@@ -77,7 +84,7 @@ export function buildMeetingBlocks(payload: MeetingSlackPayload) {
         elements: [{ type: "mrkdwn", text: "Posted by A8N CRM" }],
       },
     ],
-    text: `New meeting set: ${attendeeName}${attendeeCompany ? ` from ${attendeeCompany}` : ""} — ${formattedDate}`,
+    text: `New meeting set: ${attendeeName}${attendeeCompany ? ` from ${attendeeCompany}` : ""} — ${formattedDate}${meetingUrl ? ` | ${meetingUrl}` : ""}`,
   };
 }
 

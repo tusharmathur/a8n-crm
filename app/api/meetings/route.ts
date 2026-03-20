@@ -114,6 +114,7 @@ export async function POST(request: NextRequest) {
       accountName: accountRecord?.fields["Name"],
       accountDashboardLink: accountRecord?.fields["Dashboard Link"] ?? "",
       slackChannel: accountRecord?.fields["Slack Channel"] ?? "",
+      meetingId: record.id,
     }).catch((err) => console.error("Slack notification error:", err));
 
     await writeAuditLog({

@@ -73,8 +73,10 @@ export function MeetingsTable({ meetings }: MeetingsTableProps) {
                     key={m.id}
                     className={`hover:bg-[#F8FAFC] ${i < meetings.length - 1 || isPending ? "border-b border-[#F1F5F9]" : ""}`}
                   >
-                    <td className="px-4 py-3 font-semibold text-[#1E293B] max-w-[300px]">
-                      <span className="line-clamp-2">{title}</span>
+                    <td className="px-4 py-3 font-semibold max-w-[300px]">
+                      <Link href={`/meetings/${m.id}`} className="text-[#F97316] font-semibold hover:underline line-clamp-2">
+                        {m.fields["Attendee Name"]}
+                      </Link>
                     </td>
                     <td className="px-4 py-3 text-[#64748B]">
                       {m.accountName ? (

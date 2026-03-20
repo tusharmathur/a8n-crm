@@ -218,7 +218,9 @@ export function AccountDashboardClient({ meetings, campaigns, accountId, dashboa
                 return (
                   <div key={m.id} className="py-3 flex items-start justify-between gap-4">
                     <div className="min-w-0">
-                      <p className="font-semibold text-sm text-[#1E293B] truncate">{title}</p>
+                      <Link href={`/meetings/${m.id}`} className="font-semibold text-sm text-[#F97316] hover:underline truncate block">
+                        {m.fields["Attendee Name"]}
+                      </Link>
                     </div>
                     <div className="flex-shrink-0">
                       <span className="text-xs bg-[#F1F5F9] text-[#64748B] rounded-full px-2 py-1">

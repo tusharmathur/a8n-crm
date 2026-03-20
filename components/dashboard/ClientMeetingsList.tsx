@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { formatDate } from "@/lib/utils";
+import Link from "next/link";
 
 interface ClientMeeting {
   id: string;
@@ -23,9 +24,9 @@ function MeetingRow({ meeting }: { meeting: ClientMeeting }) {
   return (
     <div className="py-3 border-b border-[#F1F5F9] last:border-0">
       <div className="flex items-start justify-between gap-4">
-        <p className="font-semibold text-sm text-[#1E293B]">
+        <Link href={`/meetings/${meeting.id}`} className="font-semibold text-sm text-[#F97316] hover:underline">
           {meeting.fields["Attendee Name"]}
-        </p>
+        </Link>
         <span className="text-xs bg-[#F1F5F9] text-[#64748B] rounded-full px-2 py-1 flex-shrink-0">
           {formatDate(meeting.fields["Scheduled Meeting Date"])}
         </span>
