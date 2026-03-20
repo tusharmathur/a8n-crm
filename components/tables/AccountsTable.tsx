@@ -102,7 +102,7 @@ export function AccountsTable({ accounts }: AccountsTableProps) {
                     <td className="px-4 py-3">
                       <Link
                         href={`/accounts/${account.id}`}
-                        className="font-semibold text-[#1E293B] hover:text-[#F97316]"
+                        className="font-semibold text-[#1E1B4B] hover:text-[#6B21A8]"
                       >
                         {account.fields["Name"]}
                       </Link>
@@ -120,12 +120,12 @@ export function AccountsTable({ accounts }: AccountsTableProps) {
                     <td className="px-4 py-3">
                       <div className="flex gap-2">
                         <Link href={`/accounts/${account.id}`}>
-                          <button className="text-xs border border-[#E2E8F0] rounded-md px-3 py-1 text-[#1E293B] hover:bg-[#F8FAFC]">
+                          <button className="text-xs border border-[#E2E8F0] rounded-md px-3 py-1 text-[#1E1B4B] hover:bg-[#F8FAFC]">
                             View
                           </button>
                         </Link>
                         <Link href={`/accounts/${account.id}/edit`}>
-                          <button className="text-xs border border-[#E2E8F0] rounded-md px-3 py-1 text-[#1E293B] hover:bg-[#F8FAFC]">
+                          <button className="text-xs border border-[#E2E8F0] rounded-md px-3 py-1 text-[#1E1B4B] hover:bg-[#F8FAFC]">
                             Edit
                           </button>
                         </Link>
@@ -153,7 +153,7 @@ export function AccountsTable({ accounts }: AccountsTableProps) {
                           </p>
                         )}
                         <div className="flex items-center gap-3">
-                          <span className="text-sm text-[#1E293B]">
+                          <span className="text-sm text-[#1E1B4B]">
                             Delete &ldquo;{account.fields["Name"]}&rdquo;? This cannot be undone.
                           </span>
                           <button

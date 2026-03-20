@@ -24,7 +24,7 @@ function DetailRow({ label, children, last }: { label: string; children: React.R
   return (
     <div className={`flex gap-4 py-3 ${last ? "" : "border-b border-[#F1F5F9]"}`}>
       <span className="text-[13px] text-[#94A3B8] font-medium w-36 flex-shrink-0">{label}</span>
-      <span className="text-[13px] text-[#1E293B] font-medium min-w-0">{children}</span>
+      <span className="text-[13px] text-[#1E1B4B] font-medium min-w-0">{children}</span>
     </div>
   );
 }
@@ -59,7 +59,7 @@ export default async function MeetingDetailPage({ params }: Props) {
       <div className="p-6 max-w-3xl">
         {/* Top bar */}
         <div className="flex items-center justify-between mb-6">
-          <Link href="/meetings" className="text-sm text-[#64748B] hover:text-[#1E293B] flex items-center gap-1">
+          <Link href="/meetings" className="text-sm text-[#64748B] hover:text-[#1E1B4B] flex items-center gap-1">
             ← Meetings
           </Link>
           <Link href={`/meetings/${id}/edit`}>
@@ -69,7 +69,7 @@ export default async function MeetingDetailPage({ params }: Props) {
 
         {/* Title */}
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-[#1E293B]">{f["Attendee Name"]}</h1>
+          <h1 className="text-2xl font-bold text-[#1E1B4B]">{f["Attendee Name"]}</h1>
           {(accountName || campaignName) && (
             <p className="text-sm text-[#64748B] mt-1">
               {[accountName, campaignName].filter(Boolean).join(" · ")}
@@ -82,7 +82,7 @@ export default async function MeetingDetailPage({ params }: Props) {
           <SectionHeader title="Meeting Info" />
           <DetailRow label="Account">
             {accountId && accountName ? (
-              <Link href={`/accounts/${accountId}`} className="text-[#F97316] hover:underline font-medium">
+              <Link href={`/accounts/${accountId}`} className="text-[#6B21A8] hover:underline font-medium">
                 {accountName}
               </Link>
             ) : <Empty />}
@@ -113,7 +113,7 @@ export default async function MeetingDetailPage({ params }: Props) {
           <SectionHeader title="Attendee" />
           <DetailRow label="Name">
             {f["Attendee Name"] ? (
-              <span className="font-bold text-[#1E293B]">{f["Attendee Name"]}</span>
+              <span className="font-bold text-[#1E1B4B]">{f["Attendee Name"]}</span>
             ) : <Empty />}
           </DetailRow>
           <DetailRow label="Company">
@@ -121,7 +121,7 @@ export default async function MeetingDetailPage({ params }: Props) {
           </DetailRow>
           <DetailRow label="Email">
             {f["Attendee Email"] ? (
-              <a href={`mailto:${f["Attendee Email"]}`} className="text-[#F97316] hover:underline font-medium">
+              <a href={`mailto:${f["Attendee Email"]}`} className="text-[#6B21A8] hover:underline font-medium">
                 {f["Attendee Email"]}
               </a>
             ) : <Empty />}
@@ -139,7 +139,7 @@ export default async function MeetingDetailPage({ params }: Props) {
                 href={f["Attendee LinkedIn"]}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#F97316] font-medium no-underline hover:underline"
+                className="text-[#6B21A8] font-medium no-underline hover:underline"
               >
                 View LinkedIn Profile →
               </a>

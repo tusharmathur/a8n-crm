@@ -6,7 +6,11 @@ import Link from "next/link";
 import { Spinner } from "@/components/ui/Spinner";
 import { Toast, useToast } from "@/components/ui/Toast";
 import { Meeting } from "@/types";
-import { getMeetingTitle, formatDate } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
+
+const th = "text-left px-4 py-3 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium";
+const td = "px-4 py-3 text-[13px]";
+const dash = <span className="text-[#CBD5E1]">—</span>;
 
 interface MeetingsTableProps {
   meetings: Meeting[];
@@ -47,51 +51,69 @@ export function MeetingsTable({ meetings }: MeetingsTableProps) {
   return (
     <>
       <div className="bg-white border border-[#E2E8F0] rounded-[12px] overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
-        <table className="w-full text-sm">
+        <table className="w-full text-sm" style={{ tableLayout: "fixed" }}>
+          <colgroup>
+            <col style={{ width: "20%" }} />
+            <col style={{ width: "15%" }} />
+            <col style={{ width: "15%" }} />
+            <col className="hidden sm:table-column" style={{ width: "15%" }} />
+            <col style={{ width: "12%" }} />
+            <col style={{ width: "10%" }} />
+            <col className="hidden sm:table-column" style={{ width: "8%" }} />
+            <col />
+          </colgroup>
           <thead className="bg-[#F8FAFC] border-b border-[#E2E8F0]">
             <tr>
-              <th className="text-left px-4 py-3 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium">Meeting</th>
-              <th className="text-left px-4 py-3 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium">Account</th>
-              <th className="text-left px-4 py-3 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium">Campaign</th>
-              <th className="text-left px-4 py-3 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium">Meeting Taker</th>
-              <th className="text-left px-4 py-3 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium">Scheduled</th>
-              <th className="text-left px-4 py-3 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium">Actions</th>
+              <th className={th}>Attendee</th>
+              <th className={th}>Company</th>
+              <th className={th}>Account</th>
+              <th className={`${th} hidden sm:table-cell`}>Campaign</th>
+              <th className={th}>Meeting Taker</th>
+              <th className={th}>Scheduled</th>
+              <th className={`${th} hidden sm:table-cell`}>Created</th>
+              <th className={th}>Actions</th>
             </tr>
           </thead>
           <tbody>
             {meetings.map((m, i) => {
               const isPending = pendingId === m.id;
-              const title = getMeetingTitle({
-                accountName: m.accountName,
-                meetingTaker: m.fields["Meeting Taker"],
-                attendeeName: m.fields["Attendee Name"],
-                attendeeCompany: m.fields["Attendee Company"],
-              });
               return (
                 <>
                   <tr
                     key={m.id}
                     className={`hover:bg-[#F8FAFC] ${i < meetings.length - 1 || isPending ? "border-b border-[#F1F5F9]" : ""}`}
                   >
-                    <td className="px-4 py-3 font-semibold max-w-[300px]">
-                      <Link href={`/meetings/${m.id}`} className="text-[#F97316] font-semibold hover:underline line-clamp-2">
+                    <td className={td}>
+                      <Link href={`/meetings/${m.id}`} className="text-[#6B21A8] font-semibold hover:underline truncate block">
                         {m.fields["Attendee Name"]}
                       </Link>
                     </td>
-                    <td className="px-4 py-3 text-[#64748B]">
+                    <td className={`${td} text-[#1E1B4B] truncate`}>
+                      {m.fields["Attendee Company"] ?? dash}
+                    </td>
+                    <td className={`${td} text-[#1E1B4B] truncate`}>
                       {m.accountName ? (
-                        <Link href={`/accounts/${m.fields["Account"]?.[0]}`} className="hover:text-[#F97316]">
+                        <Link href={`/accounts/${m.fields["Account"]?.[0]}`} className="hover:underline hover:text-[#6B21A8]">
                           {m.accountName}
                         </Link>
-                      ) : "—"}
+                      ) : dash}
                     </td>
-                    <td className="px-4 py-3 text-[#64748B]">{m.campaignName ?? "—"}</td>
-                    <td className="px-4 py-3 text-[#64748B]">{m.fields["Meeting Taker"] ?? "—"}</td>
-                    <td className="px-4 py-3 text-[#64748B]">{formatDate(m.fields["Scheduled Meeting Date"])}</td>
-                    <td className="px-4 py-3">
+                    <td className={`${td} text-[#64748B] truncate hidden sm:table-cell`}>
+                      {m.campaignName ?? dash}
+                    </td>
+                    <td className={`${td} text-[#1E1B4B] truncate`}>
+                      {m.fields["Meeting Taker"] ?? dash}
+                    </td>
+                    <td className={`${td} text-[#1E1B4B]`}>
+                      {formatDate(m.fields["Scheduled Meeting Date"])}
+                    </td>
+                    <td className={`${td} text-[#64748B] hidden sm:table-cell`}>
+                      {formatDate(m.fields["Meeting Creation Date"])}
+                    </td>
+                    <td className={td}>
                       <div className="flex gap-2">
                         <Link href={`/meetings/${m.id}/edit`}>
-                          <button className="text-xs border border-[#E2E8F0] rounded-md px-3 py-1 text-[#1E293B] hover:bg-[#F8FAFC]">
+                          <button className="text-xs border border-[#E2E8F0] rounded-md px-3 py-1 text-[#1E1B4B] hover:bg-[#F8FAFC]">
                             Edit
                           </button>
                         </Link>
@@ -108,15 +130,12 @@ export function MeetingsTable({ meetings }: MeetingsTableProps) {
                   </tr>
                   {isPending && (
                     <tr key={`${m.id}-confirm`} className="bg-[#FFF5F5] border-b border-[#FCA5A5]">
-                      <td colSpan={6} className="px-4 py-3">
+                      <td colSpan={8} className="px-4 py-3">
                         <div className="flex items-center gap-3">
-                          <span className="text-sm text-[#1E293B]">
+                          <span className="text-sm text-[#1E1B4B]">
                             Delete &ldquo;{m.fields["Attendee Name"]}&rdquo;? This cannot be undone.
                           </span>
-                          <button
-                            onClick={handleCancel}
-                            className="text-xs border border-[#E2E8F0] rounded-md px-3 py-1 text-[#64748B] hover:bg-white"
-                          >
+                          <button onClick={handleCancel} className="text-xs border border-[#E2E8F0] rounded-md px-3 py-1 text-[#64748B] hover:bg-white">
                             Cancel
                           </button>
                           <button
@@ -127,9 +146,7 @@ export function MeetingsTable({ meetings }: MeetingsTableProps) {
                             {deleting ? <><Spinner size="sm" /> Deleting…</> : "Yes, Delete"}
                           </button>
                         </div>
-                        {deleteError && (
-                          <p className="text-[#EF4444] text-xs mt-2">{deleteError}</p>
-                        )}
+                        {deleteError && <p className="text-[#EF4444] text-xs mt-2">{deleteError}</p>}
                       </td>
                     </tr>
                   )}

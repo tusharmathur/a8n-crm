@@ -39,8 +39,8 @@ export function Sidebar({ userName = "", userEmail = "" }: SidebarProps) {
 
   const navItemClass = (href: string) =>
     isActive(href)
-      ? "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-semibold text-[#F97316] bg-[#FFF7ED] border-l-[3px] border-[#F97316]"
-      : "flex items-center gap-2 px-3 py-2 rounded-md text-sm text-[#1E293B] hover:bg-[#F8FAFC] border-l-[3px] border-transparent";
+      ? "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-semibold text-[#6B21A8] bg-[#F5F3FF] border-l-[3px] border-[#6B21A8]"
+      : "flex items-center gap-2 px-3 py-2 rounded-md text-sm text-[#1E1B4B] hover:bg-[#F8FAFC] border-l-[3px] border-transparent";
 
   return (
     <aside className="w-[220px] min-h-screen bg-white border-r border-[#E2E8F0] flex flex-col">
@@ -48,7 +48,7 @@ export function Sidebar({ userName = "", userEmail = "" }: SidebarProps) {
       <div className="px-4 py-4 border-b border-[#E2E8F0]">
         <Link href="/accounts" className="flex items-center gap-2">
           <A8NBadge size={32} />
-          <span style={{ fontSize: 16, fontWeight: 700, color: "#1E293B" }}>CRM</span>
+          <span style={{ fontSize: 16, fontWeight: 700, color: "#1E1B4B" }}>CRM</span>
         </Link>
       </div>
 
@@ -90,17 +90,17 @@ export function Sidebar({ userName = "", userEmail = "" }: SidebarProps) {
       {/* User section */}
       <div className="px-4 py-4 border-t border-[#E2E8F0]">
         <div className="flex items-center gap-3 mb-3">
-          <div className="w-8 h-8 rounded-full bg-[#FFF7ED] flex items-center justify-center text-[#F97316] font-bold text-xs flex-shrink-0">
+          <div className="w-8 h-8 rounded-full bg-[#F5F3FF] flex items-center justify-center text-[#6B21A8] font-bold text-xs flex-shrink-0">
             {getInitials(userName)}
           </div>
           <div className="min-w-0">
-            <p className="text-sm font-medium text-[#1E293B] truncate">{userName}</p>
+            <p className="text-sm font-medium text-[#1E1B4B] truncate">{userName}</p>
             <p className="text-xs text-[#94A3B8] truncate">{userEmail}</p>
           </div>
         </div>
         <button
           onClick={() => signOut({ callbackUrl: "/login" })}
-          className="w-full text-xs text-[#64748B] hover:text-[#1E293B] text-left py-1"
+          className="w-full text-xs text-[#64748B] hover:text-[#1E1B4B] text-left py-1"
         >
           Sign Out
         </button>

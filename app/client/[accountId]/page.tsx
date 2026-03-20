@@ -31,7 +31,7 @@ function ErrorPage({ message }: { message: string }) {
         <div className="flex justify-center mb-4">
           <A8NBadge size={40} />
         </div>
-        <p className="text-[#1E293B] font-semibold mb-2">{message}</p>
+        <p className="text-[#1E1B4B] font-semibold mb-2">{message}</p>
         <p className="text-sm text-[#64748B]">
           Contact your Acceler8Now representative for access.
         </p>
@@ -86,9 +86,9 @@ export default async function ClientDashboardPage({ params, searchParams }: Prop
           className="flex items-center gap-2"
         >
           <A8NBadge size={32} />
-          <span style={{ fontSize: 16, fontWeight: 700, color: "#1E293B" }}>Dashboard</span>
+          <span style={{ fontSize: 16, fontWeight: 700, color: "#1E1B4B" }}>Dashboard</span>
         </a>
-        <span className="ml-auto text-[11px] bg-[#F1F5F9] text-[#94A3B8] rounded-md px-2 py-1">
+        <span className="ml-auto text-[11px] bg-[#F5F3FF] text-[#4C1D95] rounded-md px-2 py-1 font-medium">
           Read-only view
         </span>
       </header>
@@ -97,7 +97,7 @@ export default async function ClientDashboardPage({ params, searchParams }: Prop
         {/* Account header card */}
         <div className="bg-white border border-[#E2E8F0] rounded-[12px] p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] mb-6">
           <div className="flex items-center gap-3 mb-3">
-            <h1 className="text-2xl font-bold text-[#1E293B]">{fields["Name"]}</h1>
+            <h1 className="text-2xl font-bold text-[#1E1B4B]">{fields["Name"]}</h1>
             {fields["Status"] && (
               <Badge value={fields["Status"]}>{fields["Status"]}</Badge>
             )}
@@ -107,7 +107,7 @@ export default async function ClientDashboardPage({ params, searchParams }: Prop
               href={fields["Website"]}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-[#0EA5E9] hover:underline"
+              className="text-sm text-[#7C3AED] hover:underline"
             >
               🌐 Website
             </a>
@@ -119,16 +119,16 @@ export default async function ClientDashboardPage({ params, searchParams }: Prop
 
         {/* Meetings per month chart */}
         <div className="bg-white border border-[#E2E8F0] rounded-[12px] p-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)] mb-6">
-          <h3 className="text-sm font-semibold text-[#1E293B] mb-4">Meetings per Month</h3>
+          <h3 className="text-sm font-semibold text-[#1E1B4B] mb-4">Meetings per Month</h3>
           <MeetingsChart data={chartData} />
         </div>
 
         {/* Meetings list */}
         <div className="bg-white border border-[#E2E8F0] rounded-[12px] p-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)] mb-8">
-          <h3 className="text-sm font-semibold text-[#1E293B] mb-4">
+          <h3 className="text-sm font-semibold text-[#1E1B4B] mb-4">
             All Meetings ({meetings.length})
           </h3>
-          <ClientMeetingsList meetings={meetings} />
+          <ClientMeetingsList meetings={meetings} accountId={accountId} token={token} />
         </div>
 
         {/* Footer */}
@@ -138,7 +138,7 @@ export default async function ClientDashboardPage({ params, searchParams }: Prop
             href="https://www.acceler8now.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[#F97316] hover:underline"
+            className="text-[#6B21A8] hover:underline"
           >
             Acceler8Now
           </a>

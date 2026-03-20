@@ -27,7 +27,7 @@ export function StatCard({
       <p className="text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium mb-1">
         {label}
       </p>
-      <p className="text-[20px] font-bold text-[#1E293B]">{value}</p>
+      <p className="text-[20px] font-bold text-[#1E1B4B]">{value}</p>
     </div>
   );
 }

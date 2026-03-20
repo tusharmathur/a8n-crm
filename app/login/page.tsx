@@ -8,7 +8,7 @@ export default function LoginPage() {
         <div className="text-center mb-6">
           <div className="flex justify-center items-center gap-2 mb-4">
             <A8NBadge size={40} />
-            <span style={{ fontSize: 16, fontWeight: 700, color: "#1E293B" }}>CRM</span>
+            <span style={{ fontSize: 16, fontWeight: 700, color: "#1E1B4B" }}>CRM</span>
           </div>
           <p className="text-sm text-[#64748B] mt-1">Sign in to your account</p>
         </div>

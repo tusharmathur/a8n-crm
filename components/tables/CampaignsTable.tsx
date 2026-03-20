@@ -68,7 +68,7 @@ export function CampaignsTable({ campaigns }: CampaignsTableProps) {
                     key={c.id}
                     className={`hover:bg-[#F8FAFC] ${i < campaigns.length - 1 || isPending ? "border-b border-[#F1F5F9]" : ""}`}
                   >
-                    <td className="px-4 py-3 font-semibold text-[#1E293B]">{c.fields["Campaign Name"]}</td>
+                    <td className="px-4 py-3 font-semibold text-[#1E1B4B]">{c.fields["Campaign Name"]}</td>
                     <td className="px-4 py-3 text-[#64748B]">{c.accountName ?? "—"}</td>
                     <td className="px-4 py-3 text-[#64748B]">{c.fields["Requests Sent"] ?? "—"}</td>
                     <td className="px-4 py-3 text-[#64748B]">{c.fields["Requests Accepted"] ?? "—"}</td>
@@ -78,7 +78,7 @@ export function CampaignsTable({ campaigns }: CampaignsTableProps) {
                     <td className="px-4 py-3">
                       <div className="flex gap-2">
                         <Link href={`/campaigns/${c.id}/edit`}>
-                          <button className="text-xs border border-[#E2E8F0] rounded-md px-3 py-1 text-[#1E293B] hover:bg-[#F8FAFC]">
+                          <button className="text-xs border border-[#E2E8F0] rounded-md px-3 py-1 text-[#1E1B4B] hover:bg-[#F8FAFC]">
                             Edit
                           </button>
                         </Link>
@@ -97,7 +97,7 @@ export function CampaignsTable({ campaigns }: CampaignsTableProps) {
                     <tr key={`${c.id}-confirm`} className="bg-[#FFF5F5] border-b border-[#FCA5A5]">
                       <td colSpan={8} className="px-4 py-3">
                         <div className="flex items-center gap-3">
-                          <span className="text-sm text-[#1E293B]">
+                          <span className="text-sm text-[#1E1B4B]">
                             Delete &ldquo;{c.fields["Campaign Name"]}&rdquo;? This cannot be undone.
                           </span>
                           <button

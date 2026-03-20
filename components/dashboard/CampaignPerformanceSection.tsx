@@ -34,7 +34,7 @@ export function CampaignPerformanceSection({ campaigns, accountId, readOnly }: C
 
   return (
     <div className="bg-white border border-[#E2E8F0] rounded-[12px] p-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)] mb-6">
-      <h3 className="text-sm font-semibold text-[#1E293B] mb-4">
+      <h3 className="text-sm font-semibold text-[#1E1B4B] mb-4">
         Campaigns ({campaigns.length})
       </h3>
 
@@ -44,7 +44,7 @@ export function CampaignPerformanceSection({ campaigns, accountId, readOnly }: C
           {!readOnly && (
             <Link
               href={`/campaigns/new`}
-              className="inline-flex items-center gap-1 text-sm border border-[#E2E8F0] rounded-md px-3 py-1.5 text-[#1E293B] hover:bg-[#F8FAFC]"
+              className="inline-flex items-center gap-1 text-sm border border-[#E2E8F0] rounded-md px-3 py-1.5 text-[#1E1B4B] hover:bg-[#F8FAFC]"
             >
               + New Campaign
             </Link>
@@ -56,19 +56,19 @@ export function CampaignPerformanceSection({ campaigns, accountId, readOnly }: C
           <div className="grid grid-cols-4 gap-3 mb-5">
             <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-[10px] px-4 py-3">
               <p className="text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium mb-1">Total Campaigns</p>
-              <p className="text-[18px] font-bold text-[#1E293B]">{campaigns.length}</p>
+              <p className="text-[18px] font-bold text-[#1E1B4B]">{campaigns.length}</p>
             </div>
             <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-[10px] px-4 py-3">
               <p className="text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium mb-1">Requests Sent</p>
-              <p className="text-[18px] font-bold text-[#1E293B]">{totalRequestsSent}</p>
+              <p className="text-[18px] font-bold text-[#1E1B4B]">{totalRequestsSent}</p>
             </div>
             <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-[10px] px-4 py-3">
               <p className="text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium mb-1">Avg Acceptance</p>
-              <p className="text-[18px] font-bold text-[#1E293B]">{avgAcceptance}</p>
+              <p className="text-[18px] font-bold text-[#1E1B4B]">{avgAcceptance}</p>
             </div>
             <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-[10px] px-4 py-3">
               <p className="text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium mb-1">Avg Reply Rate</p>
-              <p className="text-[18px] font-bold text-[#1E293B]">{avgReply}</p>
+              <p className="text-[18px] font-bold text-[#1E1B4B]">{avgReply}</p>
             </div>
           </div>
 
@@ -87,7 +87,7 @@ export function CampaignPerformanceSection({ campaigns, accountId, readOnly }: C
               <tbody className="divide-y divide-[#F1F5F9]">
                 {campaigns.map((c) => (
                   <tr key={c.id}>
-                    <td className="py-3 pr-4 font-semibold text-[#1E293B] whitespace-nowrap">
+                    <td className="py-3 pr-4 font-semibold text-[#1E1B4B] whitespace-nowrap">
                       {c.fields["Campaign Name"]}
                     </td>
                     <td className="py-3 pr-4 text-[#64748B] max-w-[180px]">
@@ -97,10 +97,10 @@ export function CampaignPerformanceSection({ campaigns, accountId, readOnly }: C
                       {c.fields["Requests Sent"] ?? "—"}
                     </td>
                     <td className="py-3 pl-4">
-                      <ProgressBar value={parseRate(c.fields["Acceptance Rate"])} color="#F97316" />
+                      <ProgressBar value={parseRate(c.fields["Acceptance Rate"])} color="#6B21A8" />
                     </td>
                     <td className="py-3 pl-4">
-                      <ProgressBar value={parseRate(c.fields["Reply Rate"])} color="#0EA5E9" />
+                      <ProgressBar value={parseRate(c.fields["Reply Rate"])} color="#7C3AED" />
                     </td>
                   </tr>
                 ))}

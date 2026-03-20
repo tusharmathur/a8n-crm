@@ -41,7 +41,7 @@ export function MeetingsChart({ data }: MeetingsChartProps) {
           onClick={() => setChartType("bar")}
           className={`text-xs px-3 py-1 rounded-md border ${
             chartType === "bar"
-              ? "bg-[#F97316] text-white border-[#F97316]"
+              ? "bg-[#6B21A8] text-white border-[#6B21A8]"
               : "bg-white text-[#64748B] border-[#E2E8F0]"
           }`}
         >
@@ -51,7 +51,7 @@ export function MeetingsChart({ data }: MeetingsChartProps) {
           onClick={() => setChartType("line")}
           className={`text-xs px-3 py-1 rounded-md border ${
             chartType === "line"
-              ? "bg-[#0EA5E9] text-white border-[#0EA5E9]"
+              ? "bg-[#7C3AED] text-white border-[#7C3AED]"
               : "bg-white text-[#64748B] border-[#E2E8F0]"
           }`}
         >
@@ -65,7 +65,7 @@ export function MeetingsChart({ data }: MeetingsChartProps) {
             <XAxis dataKey="month" tick={{ fontSize: 11, fill: "#94A3B8" }} />
             <YAxis tick={{ fontSize: 11, fill: "#94A3B8" }} allowDecimals={false} />
             <Tooltip />
-            <Bar dataKey="count" fill="#F97316" radius={[4, 4, 0, 0]} />
+            <Bar dataKey="count" fill="#6B21A8" radius={[4, 4, 0, 0]} />
           </BarChart>
         ) : (
           <LineChart data={data}>
@@ -76,9 +76,9 @@ export function MeetingsChart({ data }: MeetingsChartProps) {
             <Line
               type="monotone"
               dataKey="count"
-              stroke="#0EA5E9"
+              stroke="#7C3AED"
               strokeWidth={2}
-              dot={{ fill: "#0EA5E9" }}
+              dot={{ fill: "#7C3AED" }}
             />
           </LineChart>
         )}

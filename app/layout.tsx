@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "A8N CRM",
   description: "Acceler8Now CRM",
   icons: {
-    icon: "https://www.acceler8now.com/hubfs/acceler8now_2021/images/logo.svg",
+    icon: "/favicon.svg",
   },
 };
 

@@ -80,7 +80,7 @@ export function AuditLogViewer({ logs }: AuditLogViewerProps) {
             type="date"
             value={dateFrom}
             onChange={(e) => { setDateFrom(e.target.value); setPage(1); }}
-            className="border border-[#CBD5E1] rounded-[8px] px-3 py-[9px] text-sm text-[#1E293B] bg-white focus:outline-none focus:border-[#F97316] focus:ring-2 focus:ring-[#FED7AA]"
+            className="border border-[#CBD5E1] rounded-[8px] px-3 py-[9px] text-sm text-[#1E1B4B] bg-white focus:outline-none focus:border-[#6B21A8] focus:ring-2 focus:ring-[#DDD6FE]"
           />
         </div>
         <div>
@@ -89,12 +89,12 @@ export function AuditLogViewer({ logs }: AuditLogViewerProps) {
             type="date"
             value={dateTo}
             onChange={(e) => { setDateTo(e.target.value); setPage(1); }}
-            className="border border-[#CBD5E1] rounded-[8px] px-3 py-[9px] text-sm text-[#1E293B] bg-white focus:outline-none focus:border-[#F97316] focus:ring-2 focus:ring-[#FED7AA]"
+            className="border border-[#CBD5E1] rounded-[8px] px-3 py-[9px] text-sm text-[#1E1B4B] bg-white focus:outline-none focus:border-[#6B21A8] focus:ring-2 focus:ring-[#DDD6FE]"
           />
         </div>
         <button
           onClick={clearFilters}
-          className="text-sm text-[#0EA5E9] hover:underline self-end pb-[10px]"
+          className="text-sm text-[#7C3AED] hover:underline self-end pb-[10px]"
         >
           Clear Filters
         </button>
@@ -126,16 +126,16 @@ export function AuditLogViewer({ logs }: AuditLogViewerProps) {
                       <td className="px-4 py-3 text-[#64748B] whitespace-nowrap">
                         {formatDateTime(log.fields["Performed At"])}
                       </td>
-                      <td className="px-4 py-3 text-[#1E293B]">{log.fields["Action"]}</td>
+                      <td className="px-4 py-3 text-[#1E1B4B]">{log.fields["Action"]}</td>
                       <td className="px-4 py-3">
                         <Badge value={log.fields["Entity Type"]}>{log.fields["Entity Type"]}</Badge>
                       </td>
-                      <td className="px-4 py-3 text-[#1E293B]">
+                      <td className="px-4 py-3 text-[#1E1B4B]">
                         {log.fields["Entity Type"] === "Account" ? (
                           <Link
                             href={`/accounts/${log.fields["Entity ID"]}`}
                             onClick={(e) => e.stopPropagation()}
-                            className="text-[#0EA5E9] hover:underline"
+                            className="text-[#7C3AED] hover:underline"
                           >
                             {log.fields["Entity Name"]}
                           </Link>
@@ -148,7 +148,7 @@ export function AuditLogViewer({ logs }: AuditLogViewerProps) {
                     {expandedId === log.id && (
                       <tr key={`${log.id}-details`} className="bg-[#F8FAFC]">
                         <td colSpan={5} className="px-4 py-3">
-                          <pre className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-[8px] p-3 text-[12px] text-[#1E293B] overflow-auto whitespace-pre-wrap">
+                          <pre className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-[8px] p-3 text-[12px] text-[#1E1B4B] overflow-auto whitespace-pre-wrap">
                             {log.fields["Details"]
                               ? JSON.stringify(JSON.parse(log.fields["Details"]), null, 2)
                               : "No details available"}
@@ -167,7 +167,7 @@ export function AuditLogViewer({ logs }: AuditLogViewerProps) {
             <button
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page === 1}
-              className="disabled:opacity-40 hover:text-[#1E293B]"
+              className="disabled:opacity-40 hover:text-[#1E1B4B]"
             >
               ← Prev
             </button>
@@ -175,7 +175,7 @@ export function AuditLogViewer({ logs }: AuditLogViewerProps) {
             <button
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page === totalPages}
-              className="disabled:opacity-40 hover:text-[#1E293B]"
+              className="disabled:opacity-40 hover:text-[#1E1B4B]"
             >
               Next →
             </button>

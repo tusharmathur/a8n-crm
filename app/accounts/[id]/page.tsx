@@ -28,8 +28,8 @@ export default async function AccountDashboardPage({ params }: Props) {
     return (
       <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center">
         <div className="bg-white border border-[#E2E8F0] rounded-[12px] p-10 text-center shadow-sm">
-          <p className="text-[#1E293B] font-semibold mb-4">Account not found</p>
-          <Link href="/accounts" className="text-sm text-[#0EA5E9] hover:underline">
+          <p className="text-[#1E1B4B] font-semibold mb-4">Account not found</p>
+          <Link href="/accounts" className="text-sm text-[#7C3AED] hover:underline">
             ← Back to Accounts
           </Link>
         </div>
@@ -73,7 +73,7 @@ export default async function AccountDashboardPage({ params }: Props) {
       <header className="bg-white border-b border-[#E2E8F0] h-14 flex items-center px-6">
         <Link href="/accounts" className="flex items-center gap-2">
           <A8NBadge size={32} />
-          <span style={{ fontSize: 16, fontWeight: 700, color: "#1E293B" }}>CRM</span>
+          <span style={{ fontSize: 16, fontWeight: 700, color: "#1E1B4B" }}>CRM</span>
         </Link>
       </header>
 
@@ -81,13 +81,13 @@ export default async function AccountDashboardPage({ params }: Props) {
         {/* Account header card */}
         <div className="bg-white border border-[#E2E8F0] rounded-[12px] p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] mb-6">
           <div className="flex items-center gap-3 mb-3">
-            <h1 className="text-2xl font-bold text-[#1E293B]">{fields["Name"]}</h1>
+            <h1 className="text-2xl font-bold text-[#1E1B4B]">{fields["Name"]}</h1>
             {fields["Status"] && (
               <Badge value={fields["Status"]}>{fields["Status"]}</Badge>
             )}
             <Link
               href={`/accounts/${id}/edit`}
-              className="ml-auto text-xs border border-[#E2E8F0] rounded-md px-3 py-1.5 text-[#1E293B] hover:bg-[#F8FAFC]"
+              className="ml-auto text-xs border border-[#E2E8F0] rounded-md px-3 py-1.5 text-[#1E1B4B] hover:bg-[#F8FAFC]"
             >
               Edit Account
             </Link>
@@ -101,7 +101,7 @@ export default async function AccountDashboardPage({ params }: Props) {
                 href={fields["Website"]}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#0EA5E9] hover:underline"
+                className="text-[#7C3AED] hover:underline"
               >
                 🌐 Website
               </a>

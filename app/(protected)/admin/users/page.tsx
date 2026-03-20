@@ -18,7 +18,7 @@ export default async function UsersPage() {
     <div>
       <TopBar title="Users" userName={session?.user?.name ?? ""} />
       <div className="p-6">
-        <h2 className="text-xl font-bold text-[#1E293B] mb-6">Users</h2>
+        <h2 className="text-xl font-bold text-[#1E1B4B] mb-6">Users</h2>
         <UsersManager
           initialUsers={users}
           currentUserEmail={session?.user?.email ?? ""}

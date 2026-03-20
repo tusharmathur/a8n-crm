@@ -18,7 +18,7 @@ export default async function AuditPage() {
     <div>
       <TopBar title="Audit Log" userName={session?.user?.name ?? ""} />
       <div className="p-6">
-        <h2 className="text-xl font-bold text-[#1E293B] mb-6">Audit Log</h2>
+        <h2 className="text-xl font-bold text-[#1E1B4B] mb-6">Audit Log</h2>
         <AuditLogViewer logs={logs} />
       </div>
     </div>

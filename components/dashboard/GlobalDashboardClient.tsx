@@ -62,7 +62,7 @@ export function GlobalDashboardClient({ accounts, initialMeetings, initialCampai
       {selectedAccount && (
         <div className="bg-white border border-[#E2E8F0] rounded-[12px] p-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)] mb-6 flex items-center gap-3">
           <div>
-            <p className="font-semibold text-[#1E293B]">{selectedAccount.fields["Name"]}</p>
+            <p className="font-semibold text-[#1E1B4B]">{selectedAccount.fields["Name"]}</p>
             <p className="text-sm text-[#64748B]">{selectedAccount.fields["Address"] ?? ""}</p>
           </div>
           {selectedAccount.fields["Status"] && (
@@ -80,38 +80,52 @@ export function GlobalDashboardClient({ accounts, initialMeetings, initialCampai
 
       {/* Chart */}
       <div className="bg-white border border-[#E2E8F0] rounded-[12px] p-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)] mb-6">
-        <h3 className="text-sm font-semibold text-[#1E293B] mb-4">Meetings per Month</h3>
+        <h3 className="text-sm font-semibold text-[#1E1B4B] mb-4">Meetings per Month</h3>
         <MeetingsChart data={chartData} />
       </div>
 
       {/* Meetings list */}
       <div className="bg-white border border-[#E2E8F0] rounded-[12px] p-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
-        <h3 className="text-sm font-semibold text-[#1E293B] mb-4">
+        <h3 className="text-sm font-semibold text-[#1E1B4B] mb-4">
           All Meetings ({meetings.length})
         </h3>
         {sorted.length === 0 ? (
           <p className="text-[#94A3B8] text-sm text-center py-4">No meetings yet.</p>
         ) : (
-          <div className="divide-y divide-[#F1F5F9]">
-            {sorted.map((m) => {
-              const title = getMeetingTitle({
-                accountName: m.accountName,
-                meetingTaker: m.fields["Meeting Taker"],
-                attendeeName: m.fields["Attendee Name"],
-                attendeeCompany: m.fields["Attendee Company"],
-              });
-              return (
-                <div key={m.id} className="py-3 flex items-start justify-between gap-4">
-                  <Link href={`/meetings/${m.id}`} className="font-semibold text-sm text-[#F97316] hover:underline truncate">
-                    {m.fields["Attendee Name"]}
-                  </Link>
-                  <span className="text-xs bg-[#F1F5F9] text-[#64748B] rounded-full px-2 py-1 flex-shrink-0">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-[#F1F5F9]">
+                <th className="text-left pb-2 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium">Attendee</th>
+                <th className="text-left pb-2 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium">Company</th>
+                <th className="text-left pb-2 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium">Meeting Taker</th>
+                <th className="text-left pb-2 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium">Scheduled</th>
+                <th className="text-left pb-2 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium hidden sm:table-cell">Created</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sorted.map((m, i, arr) => (
+                <tr key={m.id} className={i < arr.length - 1 ? "border-b border-[#F1F5F9]" : ""}>
+                  <td className="py-3 pr-3">
+                    <Link href={`/meetings/${m.id}`} className="font-semibold text-[#6B21A8] hover:underline truncate block max-w-[160px]">
+                      {m.fields["Attendee Name"]}
+                    </Link>
+                  </td>
+                  <td className="py-3 pr-3 text-[#1E1B4B] truncate max-w-[120px]">
+                    {m.fields["Attendee Company"] ?? <span className="text-[#CBD5E1]">—</span>}
+                  </td>
+                  <td className="py-3 pr-3 text-[#1E1B4B] truncate max-w-[120px]">
+                    {m.fields["Meeting Taker"] ?? <span className="text-[#CBD5E1]">—</span>}
+                  </td>
+                  <td className="py-3 pr-3 text-[#64748B] whitespace-nowrap">
+                    {formatDate(m.fields["Scheduled Meeting Date"])}
+                  </td>
+                  <td className="py-3 text-[#64748B] whitespace-nowrap hidden sm:table-cell">
                     {formatDate(m.fields["Meeting Creation Date"])}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         )}
       </div>
     </div>

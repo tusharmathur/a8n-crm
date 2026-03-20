@@ -105,7 +105,7 @@ export function UsersManager({ initialUsers, currentUserEmail }: UsersManagerPro
           </Button>
         ) : (
           <div className="bg-white border border-[#E2E8F0] rounded-[12px] p-5 shadow-sm max-w-[600px]">
-            <h3 className="text-sm font-semibold text-[#1E293B] mb-4">Add New User</h3>
+            <h3 className="text-sm font-semibold text-[#1E1B4B] mb-4">Add New User</h3>
             <form onSubmit={handleAdd} noValidate>
               <div className="grid grid-cols-3 gap-4">
                 <div>
@@ -177,11 +177,11 @@ export function UsersManager({ initialUsers, currentUserEmail }: UsersManagerPro
                   className={`${i < users.length - 1 ? "border-b border-[#F1F5F9]" : ""} hover:bg-[#F8FAFC]`}
                 >
                   <td className="px-4 py-3">
-                    <div className="w-8 h-8 rounded-full bg-[#FFF7ED] flex items-center justify-center text-[#F97316] font-bold text-xs">
+                    <div className="w-8 h-8 rounded-full bg-[#F5F3FF] flex items-center justify-center text-[#6B21A8] font-bold text-xs">
                       {getInitials(user.fields.Name)}
                     </div>
                   </td>
-                  <td className="px-4 py-3 font-medium text-[#1E293B]">{user.fields.Name}</td>
+                  <td className="px-4 py-3 font-medium text-[#1E1B4B]">{user.fields.Name}</td>
                   <td className="px-4 py-3 text-[#64748B]">{user.fields.Email}</td>
                   <td className="px-4 py-3">
                     <Badge value={status}>{status}</Badge>
@@ -200,10 +200,10 @@ export function UsersManager({ initialUsers, currentUserEmail }: UsersManagerPro
                       </span>
                     ) : confirmRemove === user.id ? (
                       <div className="flex items-center gap-2 text-xs">
-                        <span className="text-[#1E293B]">Remove {user.fields.Name}?</span>
+                        <span className="text-[#1E1B4B]">Remove {user.fields.Name}?</span>
                         <button
                           onClick={() => setConfirmRemove(null)}
-                          className="text-[#64748B] hover:text-[#1E293B]"
+                          className="text-[#64748B] hover:text-[#1E1B4B]"
                         >
                           Cancel
                         </button>
@@ -218,7 +218,7 @@ export function UsersManager({ initialUsers, currentUserEmail }: UsersManagerPro
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => handleToggleStatus(user.id, status)}
-                          className="text-xs border border-[#E2E8F0] rounded-md px-2 py-1 text-[#1E293B] hover:bg-[#F8FAFC]"
+                          className="text-xs border border-[#E2E8F0] rounded-md px-2 py-1 text-[#1E1B4B] hover:bg-[#F8FAFC]"
                         >
                           {status === "Active" ? "Suspend" : "Reactivate"}
                         </button>

@@ -16,7 +16,7 @@ export default async function AccountsPage() {
       <div className="p-6">
         <div className="flex items-center justify-between mb-2">
           <div>
-            <h2 className="text-xl font-bold text-[#1E293B]">Accounts</h2>
+            <h2 className="text-xl font-bold text-[#1E1B4B]">Accounts</h2>
             <p className="text-sm text-[#64748B]">{accounts.length} accounts</p>
           </div>
           <Link href="/accounts/new">

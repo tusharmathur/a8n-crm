@@ -28,7 +28,7 @@ export default async function CampaignsPage() {
       <div className="p-6">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-xl font-bold text-[#1E293B]">Campaigns</h2>
+            <h2 className="text-xl font-bold text-[#1E1B4B]">Campaigns</h2>
             <p className="text-sm text-[#64748B]">{campaigns.length} campaigns</p>
           </div>
           <Link href="/campaigns/new">

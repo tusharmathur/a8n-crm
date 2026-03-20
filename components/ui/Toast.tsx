@@ -25,7 +25,7 @@ export function Toast({ message, onDismiss, duration = 2000, variant = "success"
 
   return (
     <div
-      className={`fixed bottom-5 right-5 z-50 flex items-center gap-3 bg-white rounded-lg shadow-lg px-4 py-3 text-sm text-[#1E293B] transition-opacity duration-300 border-l-4 ${
+      className={`fixed bottom-5 right-5 z-50 flex items-center gap-3 bg-white rounded-lg shadow-lg px-4 py-3 text-sm text-[#1E1B4B] transition-opacity duration-300 border-l-4 ${
         variant === "error" ? "border-[#EF4444]" : "border-[#10B981]"
       } ${visible ? "opacity-100" : "opacity-0"}`}
       role="status"

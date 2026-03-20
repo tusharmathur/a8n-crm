@@ -14,7 +14,7 @@ export default async function NewCampaignPage() {
       <TopBar title="New Campaign" userName={session?.user?.name ?? ""} />
       <div className="p-6">
         <Card className="max-w-[680px]">
-          <h2 className="text-lg font-semibold text-[#1E293B] mb-6">Create Campaign</h2>
+          <h2 className="text-lg font-semibold text-[#1E1B4B] mb-6">Create Campaign</h2>
           <CampaignForm accounts={accounts} />
         </Card>
       </div>

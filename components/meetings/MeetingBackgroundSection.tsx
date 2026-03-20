@@ -98,7 +98,7 @@ export function MeetingBackgroundSection({
           <button
             onClick={handleRegenerate}
             disabled={loading}
-            className="text-xs border border-[#E2E8F0] rounded-md px-2.5 py-1 text-[#1E293B] hover:bg-[#F8FAFC] disabled:opacity-50 flex items-center gap-1"
+            className="text-xs border border-[#E2E8F0] rounded-md px-2.5 py-1 text-[#1E1B4B] hover:bg-[#F8FAFC] disabled:opacity-50 flex items-center gap-1"
           >
             {loading ? <><Spinner size="sm" /> Generating…</> : "✨ Regenerate"}
           </button>
@@ -106,8 +106,8 @@ export function MeetingBackgroundSection({
       </div>
 
       {confirming && (
-        <div className="bg-[#FFF7ED] border border-[#FED7AA] rounded-[8px] p-3 mb-4 flex items-center gap-3 flex-wrap">
-          <span className="text-sm text-[#1E293B] flex-1">
+        <div className="bg-[#F5F3FF] border border-[#DDD6FE] rounded-[8px] p-3 mb-4 flex items-center gap-3 flex-wrap">
+          <span className="text-sm text-[#1E1B4B] flex-1">
             Regenerate background? This will replace the existing brief.
           </span>
           <button
@@ -118,7 +118,7 @@ export function MeetingBackgroundSection({
           </button>
           <button
             onClick={handleConfirmRegenerate}
-            className="text-xs rounded-md px-3 py-1 bg-[#F97316] text-white hover:bg-[#EA580C]"
+            className="text-xs rounded-md px-3 py-1 bg-[#6B21A8] text-white hover:bg-[#7C3AED]"
           >
             Regenerate
           </button>
@@ -127,7 +127,7 @@ export function MeetingBackgroundSection({
 
       {background ? (
         <div
-          className="text-[14px] text-[#1E293B] leading-[1.7] bg-[#F8FAFC] border border-[#E2E8F0] rounded-[8px] px-5 py-4"
+          className="text-[14px] text-[#1E1B4B] leading-[1.7] bg-[#F8FAFC] border border-[#E2E8F0] rounded-[8px] px-5 py-4"
           style={{ whiteSpace: "pre-wrap" }}
         >
           {background}
@@ -138,7 +138,7 @@ export function MeetingBackgroundSection({
           <button
             onClick={handleGenerate}
             disabled={loading}
-            className="text-sm border border-[#E2E8F0] rounded-md px-3 py-2 text-[#1E293B] hover:bg-[#F8FAFC] disabled:opacity-50 flex items-center gap-1"
+            className="text-sm border border-[#E2E8F0] rounded-md px-3 py-2 text-[#1E1B4B] hover:bg-[#F8FAFC] disabled:opacity-50 flex items-center gap-1"
           >
             {loading ? <><Spinner size="sm" /> Generating…</> : "✨ Generate Background"}
           </button>

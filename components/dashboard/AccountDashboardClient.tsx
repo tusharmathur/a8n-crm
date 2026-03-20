@@ -93,13 +93,13 @@ export function AccountDashboardClient({ meetings, campaigns, accountId, dashboa
       <div className="flex items-center gap-3 mb-4">
         <Link
           href="/accounts"
-          className="text-sm text-[#64748B] hover:text-[#1E293B] flex items-center gap-1"
+          className="text-sm text-[#64748B] hover:text-[#1E1B4B] flex items-center gap-1"
         >
           ← Accounts
         </Link>
         <button
           onClick={handleShare}
-          className="ml-auto text-sm border border-[#E2E8F0] rounded-md px-3 py-1.5 text-[#1E293B] hover:bg-[#F8FAFC] flex items-center gap-1"
+          className="ml-auto text-sm border border-[#E2E8F0] rounded-md px-3 py-1.5 text-[#1E1B4B] hover:bg-[#F8FAFC] flex items-center gap-1"
         >
           🔗 {copied ? "Link copied!" : "Share Link"}
         </button>
@@ -117,7 +117,7 @@ export function AccountDashboardClient({ meetings, campaigns, accountId, dashboa
             </span>
             <button
               onClick={handleCopyDashboardLink}
-              className="text-xs border border-[#E2E8F0] rounded-md px-2.5 py-1 text-[#1E293B] hover:bg-[#F8FAFC] flex-shrink-0"
+              className="text-xs border border-[#E2E8F0] rounded-md px-2.5 py-1 text-[#1E1B4B] hover:bg-[#F8FAFC] flex-shrink-0"
             >
               Copy Link
             </button>
@@ -125,7 +125,7 @@ export function AccountDashboardClient({ meetings, campaigns, accountId, dashboa
               href={dashboardLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs border border-[#E2E8F0] rounded-md px-2.5 py-1 text-[#1E293B] hover:bg-[#F8FAFC] flex-shrink-0"
+              className="text-xs border border-[#E2E8F0] rounded-md px-2.5 py-1 text-[#1E1B4B] hover:bg-[#F8FAFC] flex-shrink-0"
             >
               Open
             </a>
@@ -134,7 +134,7 @@ export function AccountDashboardClient({ meetings, campaigns, accountId, dashboa
           <button
             onClick={handleGenerateLink}
             disabled={generating}
-            className="text-xs border border-[#E2E8F0] rounded-md px-2.5 py-1 text-[#1E293B] hover:bg-[#F8FAFC] disabled:opacity-50"
+            className="text-xs border border-[#E2E8F0] rounded-md px-2.5 py-1 text-[#1E1B4B] hover:bg-[#F8FAFC] disabled:opacity-50"
           >
             {generating ? "Generating…" : "Generate Link"}
           </button>
@@ -148,11 +148,11 @@ export function AccountDashboardClient({ meetings, campaigns, accountId, dashboa
         </span>
         {slackChannel ? (
           <>
-            <span className="text-sm text-[#1E293B] font-mono">{slackChannel}</span>
+            <span className="text-sm text-[#1E1B4B] font-mono">{slackChannel}</span>
             <button
               onClick={handleTestSlack}
               disabled={slackTesting}
-              className="ml-auto text-xs border border-[#E2E8F0] rounded-md px-2.5 py-1 text-[#1E293B] hover:bg-[#F8FAFC] disabled:opacity-50 flex-shrink-0"
+              className="ml-auto text-xs border border-[#E2E8F0] rounded-md px-2.5 py-1 text-[#1E1B4B] hover:bg-[#F8FAFC] disabled:opacity-50 flex-shrink-0"
             >
               {slackTesting ? "Testing…" : "🔔 Test Slack"}
             </button>
@@ -171,11 +171,11 @@ export function AccountDashboardClient({ meetings, campaigns, accountId, dashboa
       <div className="grid grid-cols-3 gap-4 mb-6">
         <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-[10px] px-5 py-4">
           <p className="text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium mb-1">Total Meetings</p>
-          <p className="text-[20px] font-bold text-[#1E293B]">{meetings.length}</p>
+          <p className="text-[20px] font-bold text-[#1E1B4B]">{meetings.length}</p>
         </div>
         <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-[10px] px-5 py-4">
           <p className="text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium mb-1">Last Meeting</p>
-          <p className="text-[20px] font-bold text-[#1E293B]">{formatDate(lastMeetingDate)}</p>
+          <p className="text-[20px] font-bold text-[#1E1B4B]">{formatDate(lastMeetingDate)}</p>
         </div>
         <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-[10px] px-5 py-4">
           <p className="text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium mb-1">Account ID</p>
@@ -188,49 +188,59 @@ export function AccountDashboardClient({ meetings, campaigns, accountId, dashboa
 
       {/* Chart */}
       <div className="bg-white border border-[#E2E8F0] rounded-[12px] p-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)] mb-6">
-        <h3 className="text-sm font-semibold text-[#1E293B] mb-4">Meetings per Month</h3>
+        <h3 className="text-sm font-semibold text-[#1E1B4B] mb-4">Meetings per Month</h3>
         <MeetingsChart data={chartData} />
       </div>
 
       {/* Meetings list */}
       <div className="bg-white border border-[#E2E8F0] rounded-[12px] p-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
-        <h3 className="text-sm font-semibold text-[#1E293B] mb-4">
+        <h3 className="text-sm font-semibold text-[#1E1B4B] mb-4">
           All Meetings ({meetings.length})
         </h3>
         {meetings.length === 0 ? (
           <p className="text-[#94A3B8] text-sm text-center py-4">No meetings yet.</p>
         ) : (
-          <div className="divide-y divide-[#F1F5F9]">
-            {meetings
-              .slice()
-              .sort((a, b) => {
-                const dA = a.fields["Meeting Creation Date"] ?? "";
-                const dB = b.fields["Meeting Creation Date"] ?? "";
-                return dB.localeCompare(dA);
-              })
-              .map((m) => {
-                const title = getMeetingTitle({
-                  accountName: m.accountName,
-                  meetingTaker: m.fields["Meeting Taker"],
-                  attendeeName: m.fields["Attendee Name"],
-                  attendeeCompany: m.fields["Attendee Company"],
-                });
-                return (
-                  <div key={m.id} className="py-3 flex items-start justify-between gap-4">
-                    <div className="min-w-0">
-                      <Link href={`/meetings/${m.id}`} className="font-semibold text-sm text-[#F97316] hover:underline truncate block">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-[#F1F5F9]">
+                <th className="text-left pb-2 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium">Attendee</th>
+                <th className="text-left pb-2 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium">Company</th>
+                <th className="text-left pb-2 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium">Meeting Taker</th>
+                <th className="text-left pb-2 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium">Scheduled</th>
+                <th className="text-left pb-2 text-[11px] uppercase tracking-wide text-[#94A3B8] font-medium hidden sm:table-cell">Created</th>
+              </tr>
+            </thead>
+            <tbody>
+              {meetings
+                .slice()
+                .sort((a, b) => {
+                  const dA = a.fields["Meeting Creation Date"] ?? "";
+                  const dB = b.fields["Meeting Creation Date"] ?? "";
+                  return dB.localeCompare(dA);
+                })
+                .map((m, i, arr) => (
+                  <tr key={m.id} className={i < arr.length - 1 ? "border-b border-[#F1F5F9]" : ""}>
+                    <td className="py-3 pr-3">
+                      <Link href={`/meetings/${m.id}`} className="font-semibold text-[#6B21A8] hover:underline truncate block max-w-[160px]">
                         {m.fields["Attendee Name"]}
                       </Link>
-                    </div>
-                    <div className="flex-shrink-0">
-                      <span className="text-xs bg-[#F1F5F9] text-[#64748B] rounded-full px-2 py-1">
-                        {formatDate(m.fields["Meeting Creation Date"])}
-                      </span>
-                    </div>
-                  </div>
-                );
-              })}
-          </div>
+                    </td>
+                    <td className="py-3 pr-3 text-[#1E1B4B] truncate max-w-[120px]">
+                      {m.fields["Attendee Company"] ?? <span className="text-[#CBD5E1]">—</span>}
+                    </td>
+                    <td className="py-3 pr-3 text-[#1E1B4B] truncate max-w-[120px]">
+                      {m.fields["Meeting Taker"] ?? <span className="text-[#CBD5E1]">—</span>}
+                    </td>
+                    <td className="py-3 pr-3 text-[#64748B] whitespace-nowrap">
+                      {formatDate(m.fields["Scheduled Meeting Date"])}
+                    </td>
+                    <td className="py-3 text-[#64748B] whitespace-nowrap hidden sm:table-cell">
+                      {formatDate(m.fields["Meeting Creation Date"])}
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
         )}
       </div>
 

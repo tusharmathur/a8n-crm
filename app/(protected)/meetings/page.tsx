@@ -41,7 +41,7 @@ export default async function MeetingsPage() {
       <div className="p-6">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-xl font-bold text-[#1E293B]">Meetings</h2>
+            <h2 className="text-xl font-bold text-[#1E1B4B]">Meetings</h2>
             <p className="text-sm text-[#64748B]">{meetings.length} meetings</p>
           </div>
           <Link href="/meetings/new">

@@ -14,7 +14,7 @@ const statusColors: Record<string, string> = {
   Active: "bg-[#DCFCE7] text-[#166534]",
   Suspended: "bg-[#FEE2E2] text-[#991B1B]",
   // Entity Type (audit log)
-  Account: "bg-[#CFFAFE] text-[#0E7490]",
+  Account: "bg-[#F5F3FF] text-[#4C1D95]",
   Campaign: "bg-[#EDE9FE] text-[#6D28D9]",
   Meeting: "bg-[#FEF9C3] text-[#A16207]",
 };
